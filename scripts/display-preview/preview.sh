@@ -10,7 +10,7 @@ mod=$root/boards/shields/nice_view_gem
 out=$(mktemp -d); trap 'rm -rf "$out"' EXIT
 mapfile -t srcs < <(find "$lvgl/src" -name '*.c' | grep -vE '/(sdl|gpu|nxp|arm2d|swm341|stm32)')
 gcc -O1 -w -include "$here/stub/zephyr/kernel.h" -DLV_CONF_INCLUDE_SIMPLE \
-  -DCONFIG_ZMK_SPLIT=1 -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=1 -DCONFIG_NICE_VIEW_WIDGET_INVERTED=0 \
+  -DCONFIG_ZMK_SPLIT=1 -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=1 -DCONFIG_NICE_VIEW_WIDGET_INVERTED=${INVERTED:-$(grep -q "^CONFIG_NICE_VIEW_WIDGET_INVERTED=y" "$root/boards/shields/toucan/toucan_left.conf" && echo 1 || echo 0)} \
   -DCONFIG_TOUCAN_STATUS_SCREEN=3 -DCONFIG_USB_DEVICE_STACK=1 \
   -I"$here" -I"$here/stub" -I"$lvgl" -I"$mod/widgets" -o "$out/harness" "$here/main.c" \
   "$mod/widgets/gem.c" "$mod/widgets/util.c" "$mod/assets/gem_images.c" \
