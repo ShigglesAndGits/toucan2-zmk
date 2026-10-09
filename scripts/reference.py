@@ -51,7 +51,8 @@ PRETTY = {
     "Ctl+C": "Copy", "Ctl+Sft+V": "Paste ⇧", "Ctl+LALT": "sC+A",
     "Ctl+Alt+DEL": "C-A-Del", "Ctl+Alt+END": "C-A-End",
     "Ctl+Alt+PAUSE BREAK": "C-A-Brk", "&mkp LCLK": "LMB", "&mkp RCLK": "RMB",
-    "&mkp MCLK": "MMB",
+    "&mkp MCLK": "MMB", "Gui+LEFT": "◆←", "Gui+RIGHT": "◆→", "Gui+UP": "◆↑",
+    "Gui+DOWN": "◆↓", "Alt+TAB": "Alt⇥",
 }
 LAYER_NAMES = set(REACH) | {"WORK"}
 MODS = {"⇧ Shift", "Ctrl", "Alt", "◆ Super"}
