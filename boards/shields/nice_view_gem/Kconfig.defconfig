@@ -6,7 +6,8 @@ config TOUCAN_STATUS_SCREEN
     range 0 3
     help
       0-2: beekeeb's Toucan screens. 3: nice-view-gem's central screen
-      (light background, needle WPM gauge), see widgets/gem.c.
+      (needle WPM gauge; dark on this panel,
+      NICE_VIEW_WIDGET_INVERTED=y for light), see widgets/gem.c.
 
 config LV_Z_VDB_SIZE
     default 100

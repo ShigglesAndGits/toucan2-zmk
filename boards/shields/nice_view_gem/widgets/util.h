@@ -11,7 +11,8 @@
 #define BUFFER_OFFSET_BOTTOM 0
 
 #if defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN == 3
-// nice-view-gem palette: light background unless NICE_VIEW_WIDGET_INVERTED
+// nice-view-gem palette. The Toucan panel shows LVGL "white" as dark (opposite
+// of the nice!view), so the default renders dark and INVERTED renders light.
 #define LVGL_BACKGROUND                                                                            \
     (IS_ENABLED(CONFIG_NICE_VIEW_WIDGET_INVERTED) ? lv_color_black() : lv_color_white())
 #define LVGL_FOREGROUND                                                                            \

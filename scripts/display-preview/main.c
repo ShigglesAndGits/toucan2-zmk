@@ -22,7 +22,8 @@ static lv_color_t cbuf[SCREEN_WIDTH * SCREEN_HEIGHT];
 static void dump(const char *path) {
     FILE *f = fopen(path, "wb");
     fprintf(f, "P5\n%d %d\n255\n", SCREEN_WIDTH, SCREEN_HEIGHT);
-    for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) fputc(cbuf[i].full ? 255 : 0, f);
+    for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) /* Toucan panel shows LVGL 1 ("white") as dark: checked on hardware 2026-10-09. */
+        fputc(cbuf[i].full ? 0 : 255, f);
     fclose(f);
 }
 
