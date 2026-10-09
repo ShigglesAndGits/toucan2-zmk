@@ -37,7 +37,8 @@ NOTES = [
     ("Ctrl+Alt+Del", "WORK &rarr; C-A-Del &middot; sticky Ctrl+Alt also on WORK"),
     ("Profiles", "BT 0&ndash;4 on LOWER bottom-right &middot; BT Clr on SYSTEM"),
     ("Output", "Out BLE / USB / Tog on SYSTEM (persists in flash)"),
-    ("Trackpad", "scrolls on RAISE &middot; thumbs turn into clicks while touching"),
+    ("Gestures", "3-finger swipe = Super+arrow (column focus) &middot; pinch = Ctrl+−/= zoom"),
+    ("Trackpad", "scrolls on RAISE &middot; while touching: S/D/F = R/M/L click, W/R = back/fwd"),
 ]
 
 PRETTY = {

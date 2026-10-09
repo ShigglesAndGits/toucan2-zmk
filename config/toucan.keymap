@@ -138,14 +138,16 @@
         };
 
         // Active while a finger is on the trackpad (toucan.dtsi -> &mo 4).
-        // Stock beekeeb layer: thumbs become mouse buttons.
+        // Mouse buttons sit where they were on the Sofle's LOWER layer, no
+        // layer key needed: W/R = back/forward, S/D/F = right/middle/left click.
+        // Thumbs stay transparent so GUI/Ctrl/RAISE keep working mid-touch.
         mouse {
             display-name = "MOU";
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                     &mkp MCLK &mkp LCLK &mkp RCLK    &mkp LCLK &mkp RCLK &mkp MCLK
+&trans  &trans  &mkp MB4   &trans     &mkp MB5   &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &mkp RCLK  &mkp MCLK  &mkp LCLK  &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans     &trans     &trans     &trans    &trans  &trans  &trans  &trans  &trans  &trans
+                           &trans     &trans     &trans    &trans  &trans  &trans
             >;
         };
 
@@ -184,4 +186,15 @@
     scroller {
         layers = <RAISE>;
     };
+};
+
+// 3-finger swipes (N, E, S, W) = Super+arrows, i.e. Hyprland column focus.
+// Stock sent Ctrl+Super+arrows, which is moveintogroup (window tabbing) here.
+&swipe_button_mapper {
+    bindings = <&kp LG(UP)>, <&kp LG(RIGHT)>, <&kp LG(DOWN)>, <&kp LG(LEFT)>;
+};
+
+// Pinch = Ctrl+-/= (browser/app zoom). Stock Super+-/= is unbound in Hyprland.
+&zip_zoom_mapper {
+    bindings = <&kp LC(MINUS)>, <&kp LC(EQUAL)>;
 };
