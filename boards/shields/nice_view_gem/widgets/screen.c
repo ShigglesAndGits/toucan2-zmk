@@ -32,6 +32,9 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include "battery_peripheral.h"
 #include "profile.h"
 #include "output.h"
+#if defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN == 3
+#include "chart.h"
+#endif
 #endif
 
 #if defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN == 1
@@ -66,7 +69,7 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
 
     // Draw widgets
     draw_output_status(canvas, state);
-    #if defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN == 2
+    #if defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN >= 2
     draw_chart_status(canvas, state);
     #endif
     draw_layer_status(canvas, state);
@@ -255,7 +258,7 @@ static int display_activity_event_handler(const zmk_event_t *eh) {
 ZMK_LISTENER(nice_view_gem_display, display_activity_event_handler);
 ZMK_SUBSCRIPTION(nice_view_gem_display, zmk_activity_state_changed);
 
-#if defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN == 2
+#if defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN >= 2
 /**
  * WPM status
  */
@@ -301,7 +304,7 @@ int zmk_widget_screen_init(struct zmk_widget_screen *widget, lv_obj_t *parent) {
     widget_layer_status_init();
     widget_output_status_init();
 
-    #if defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN == 2
+    #if defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN >= 2
     widget_chart_status_init();
     #endif
 

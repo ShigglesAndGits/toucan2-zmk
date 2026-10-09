@@ -11,6 +11,13 @@ Only `config/toucan.keymap` differs from upstream so far.
 keymap, run `scripts/reference.py` (needs `pipx install keymap-drawer`); an open
 copy reloads itself every minute.
 
+## Display
+
+The left half's screen uses style 3 (`CONFIG_TOUCAN_STATUS_SCREEN` in
+`boards/shields/toucan/toucan_left.conf`): nice-view-gem's central layout from
+the Sofle, in `boards/shields/nice_view_gem/widgets/gem.c`. Preview layout
+changes without flashing via `scripts/display-preview/preview.sh`.
+
 ## Flashing
 
 0. Shortcut: `scripts/flash-when-ready.sh "firmware/<file>.uf2"` waits for the

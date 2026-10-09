@@ -10,8 +10,16 @@
 #define BUFFER_OFFSET_MIDDLE 0
 #define BUFFER_OFFSET_BOTTOM 0
 
+#if defined(CONFIG_TOUCAN_STATUS_SCREEN) && CONFIG_TOUCAN_STATUS_SCREEN == 3
+// nice-view-gem palette: light background unless NICE_VIEW_WIDGET_INVERTED
+#define LVGL_BACKGROUND                                                                            \
+    (IS_ENABLED(CONFIG_NICE_VIEW_WIDGET_INVERTED) ? lv_color_black() : lv_color_white())
+#define LVGL_FOREGROUND                                                                            \
+    (IS_ENABLED(CONFIG_NICE_VIEW_WIDGET_INVERTED) ? lv_color_white() : lv_color_black())
+#else
 #define LVGL_BACKGROUND lv_color_black()
 #define LVGL_FOREGROUND lv_color_white()
+#endif
 
 struct status_state {
     uint8_t battery;
