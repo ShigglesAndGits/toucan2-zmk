@@ -21,19 +21,19 @@ OUT = ROOT / "reference.html"
 # How each layer is reached, shown under its title.
 REACH = {
     "BASE": "default",
-    "LOWER": "hold left inner thumb",
+    "LOWER": "hold right outer thumb",
     "RAISE": "hold right inner thumb",
     "WORK": "double-tap + hold right inner thumb",
     "MOU": "automatic while a finger is on the trackpad",
-    "SYSTEM": "hold both inner thumbs",
+    "SYSTEM": "hold both inner thumbs (RAISE, then Space thumb)",
 }
 
 NOTES = [
-    ("Tab / Ctrl", "tap for Tab, hold for Ctrl"),
-    ("Alt / sC+A", "hold for Alt &middot; tap = sticky Ctrl+Alt for the next key"),
-    ("Alt+Tab", "hold the outer right thumb (Alt), tap Tab"),
-    ("Ctrl+Alt+Del", "WORK &rarr; C-A-Del, or sC+A then RAISE+Del"),
-    ("Profiles", "BT 0&ndash;4 on LOWER bottom-left &middot; BT Clr on SYSTEM"),
+    ("Ctrl", "left middle thumb &middot; GUI outer, Space inner"),
+    ("Esc / Alt", "tap for Esc, hold (200ms) for Alt"),
+    ("Alt+Tab", "RAISE + Tab"),
+    ("Ctrl+Alt+Del", "WORK &rarr; C-A-Del &middot; sticky Ctrl+Alt also on WORK"),
+    ("Profiles", "BT 0&ndash;4 on LOWER bottom-right &middot; BT Clr on SYSTEM"),
     ("Output", "Out BLE / USB / Tog on SYSTEM (persists in flash)"),
     ("Trackpad", "scrolls on RAISE &middot; thumbs turn into clicks while touching"),
 ]

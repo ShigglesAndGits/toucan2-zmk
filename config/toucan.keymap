@@ -2,19 +2,23 @@
  * Alex's Toucan 2 keymap - ported from the Sofle Hybrid Ergomech keymap
  * (ShigglesAndGits/sofle-hybrid-ergomech, config/sofle_ergomech.keymap).
  *
- * The Toucan is 3x6 + 3 thumbs per side with no number row and no encoder,
- * so the Sofle layers are mapped onto it like this:
- *   - Sofle number row dropped: digits live on the LOWER numpad (as before),
- *     the shifted-number symbols + ` ~ - _ + moved to RAISE's empty left half.
- *   - Ten Sofle thumb keys squeezed onto six:
- *       left  outer->inner: GUI, SPACE, LOWER
- *       right inner->outer: RAISE/WORK, ENTER, hold ALT / tap sticky Ctrl+Alt
- *     CTRL moves to hold-Tab (caps-lock position), ALT to the hold of the
- *     outer right thumb, so Alt+Tab is now "hold outer right thumb, tap Tab".
- *     Play/pause (old ALT double-tap) and volume (old encoders) are on SYSTEM.
- *     DEL is on RAISE (top-right), Ctrl+Alt+Del stays on WORK.
- *   - Layer 4 MUST stay the mouse layer: toucan.dtsi's is_touching_processor
- *     activates layer 4 while a finger is on the trackpad.
+ * The Toucan is 3x6 + 3 thumbs per side with no number row and no encoder.
+ * Thumb assignments follow the Sofle keystroke captures (Aug 2026, 61.6k presses):
+ *   left  outer->inner: GUI (810), CTRL (639), SPACE (8397)
+ *   right inner->outer: RAISE/WORK (998), ENTER (583), LOWER (144)
+ * CTRL is a plain thumb key because its top partners are Backspace (464),
+ * V/A/C and Shift - a pinky mod-tap can't chord with A/Z/Shift.
+ * GUI and RAISE stay on opposite hands for Super+RAISE+arrows (~1960 chords).
+ * Alt, Del, Alt+Tab and sticky Ctrl+Alt were pressed 0 times, so they live
+ * off the thumbs: Alt = hold Esc, Alt+Tab = RAISE+Tab, Del = RAISE top-right,
+ * sticky Ctrl+Alt + Ctrl+Alt chords on WORK.
+ *
+ * LOWER is a left-hand numpad (7-8-9 on W-E-R, 0 on the Space thumb) so the
+ * right hand can stay on the trackpad. SYSTEM (used twice) = hold both inner
+ * thumbs, i.e. RAISE + the Space thumb.
+ *
+ * Layer 4 MUST stay the mouse layer: toucan.dtsi's is_touching_processor
+ * activates layer 4 while a finger is on the trackpad.
  */
 
 #include <behaviors.dtsi>
@@ -31,19 +35,7 @@
 #define SYSTEM 5
 
 / {
-    // Activate SYSTEM by holding both inner thumbs (LOWER + RAISE tri-layer)
-
-    conditional_layers {
-        compatible = "zmk,conditional-layers";
-
-        system_layer {
-            if-layers = <LOWER RAISE>;
-            then-layer = <SYSTEM>;
-        };
-    };
-
     behaviors {
-        // LOWER is a plain &mo on the thumb (instant, no tap-dance arbitration).
         // RAISE keeps a tap dance so double-tap-hold reaches WORK (RDP chords).
         // 200ms term deliberate: 100ms made the WORK double-tap too tight.
         td_layer_work: tap_dance_layer_work {
@@ -53,14 +45,14 @@
             bindings = <&mo RAISE>, <&mo WORK>;
         };
 
-        // Outer right thumb: tap = sticky Ctrl+Alt (tap, then tap a target key),
-        // hold = ALT. Balanced so "hold + tap Tab" resolves to Alt+Tab.
-        ht_alt_sticky: hold_alt_tap_sticky {
+        // Esc: tap = Esc, hold = Alt. Tap-preferred so fast Esc-then-key rolls
+        // (vim) never turn into Alt chords; Alt needs a deliberate 200ms hold.
+        ht_alt_esc: hold_alt_tap_esc {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "balanced";
+            flavor = "tap-preferred";
             tapping-term-ms = <200>;
-            bindings = <&kp>, <&sk>;
+            bindings = <&kp>, <&kp>;
         };
     };
 
@@ -71,18 +63,17 @@
             display-name = "BASE";
 
             // -------------------------------------------------------------------------------
-            // |  ESC  |  Q  |  W  |  E   |  R   |  T   |   |  Y   |  U   |  I  |  O  |  P | BKSPC |
-            // | TAB/C |  A  |  S  |  D   |  F   |  G   |   |  H   |  J   |  K  |  L  |  ; |  ' |
+            // | Esc/A |  Q  |  W  |  E   |  R   |  T   |   |  Y   |  U   |  I  |  O  |  P | BKSPC |
+            // |  TAB  |  A  |  S  |  D   |  F   |  G   |   |  H   |  J   |  K  |  L  |  ; |  '    |
             // | SHIFT |  Z  |  X  |  C   |  V   |  B   |   |  N   |  M   |  ,  |  .  |  / | SHIFT |
-            //                     | GUI  | SPACE| LOWER|   | RSE/WORK | ENTER | ALT/sC+A |
-            // (TAB/C = tap Tab, hold Ctrl. ALT/sC+A = hold Alt, tap sticky Ctrl+Alt.
-            //  Ctrl+Alt+Del = tap sC+A, then RAISE+top-right DEL, or WORK's C-A-D.)
+            //                     | GUI  | CTRL | SPACE|   | RSE/WORK | ENTER | LOWER |
+            // (Esc/A = tap Esc, hold Alt.)
 
             bindings = <
-&kp ESC            &kp Q  &kp W  &kp E     &kp R      &kp T          &kp Y           &kp U      &kp I                         &kp O    &kp P     &kp BACKSPACE
-&mt LCTRL TAB      &kp A  &kp S  &kp D     &kp F      &kp G          &kp H           &kp J      &kp K                         &kp L    &kp SEMI  &kp SQT
-&kp LSHIFT         &kp Z  &kp X  &kp C     &kp V      &kp B          &kp N           &kp M      &kp COMMA                     &kp DOT  &kp FSLH  &kp RSHIFT
-                                 &kp LGUI  &kp SPACE  &mo LOWER      &td_layer_work  &kp ENTER  &ht_alt_sticky LALT LC(LALT)
+&ht_alt_esc LALT ESC  &kp Q  &kp W  &kp E     &kp R      &kp T          &kp Y           &kp U      &kp I      &kp O    &kp P     &kp BACKSPACE
+&kp TAB               &kp A  &kp S  &kp D     &kp F      &kp G          &kp H           &kp J      &kp K      &kp L    &kp SEMI  &kp SQT
+&kp LSHIFT            &kp Z  &kp X  &kp C     &kp V      &kp B          &kp N           &kp M      &kp COMMA  &kp DOT  &kp FSLH  &kp RSHIFT
+                                    &kp LGUI  &kp LCTRL  &kp SPACE      &td_layer_work  &kp ENTER  &mo LOWER
             >;
         };
 
@@ -90,20 +81,17 @@
             display-name = "LOWER";
 
             // -------------------------------------------------------------------------------
-            // | BKSPC |     | MB4 |      | MB5  |PASTE'|   |  7   |  8  |  9  |  (  |  )  | BKSPC |
-            // |  INS  |     | MB2 | MB3  | MB1  | COPY |   |  4   |  5  |  6  |  [  |  ]  |   |   |
-            // |       | BT0 | BT1 | BT2  | BT3  | BT4  |   |  1   |  2  |  3  |  {  |  }  |   =   |
-            //                     |      |      |  ▼   |   |  ▽   |  0  |  .  |
-            // (PASTE' = plain paste Ctrl+Shift+V; MBx = mouse buttons; BTx = BLE profile select)
-            // F1-F12 moved to SYSTEM (no F row on the Toucan).
-            // Inner right thumb is transparent so LOWER + that thumb falls through
-            // to the RAISE tap dance -> LOWER+RAISE tri-layer -> SYSTEM.
+            // |       |  /  |  7  |  8   |  9   |  -   |   | MB4  | MB5  |     |  (  |  )  | BKSPC |
+            // |       |  *  |  4  |  5   |  6   |  +   |   |      |  {   |  }  |  [  |  ]  |   |   |
+            // |       |  ,  |  1  |  2   |  3   |  =   |   | BT0  | BT1  | BT2 | BT3 | BT4 |   =   |
+            //                     |      |  .   |  0   |   |      |      |  ▼  |
+            // Left-hand numpad; right hand keeps brackets + BLE profile select.
 
             bindings = <
-&kp BACKSPACE  &trans        &mkp MB4      &trans        &mkp MB5      &kp LC(LS(V))  &kp N7  &kp N8  &kp N9      &kp LPAR  &kp RPAR  &kp BACKSPACE
-&kp INS        &trans        &mkp MB2      &mkp MB3      &mkp MB1      &kp LC(C)      &kp N4  &kp N5  &kp N6      &kp LBKT  &kp RBKT  &kp PIPE
-&trans         &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4   &kp N1  &kp N2  &kp N3      &kp LBRC  &kp RBRC  &kp EQUAL
-                                           &trans        &trans        &trans         &trans  &kp N0  &kp PERIOD
+&trans  &kp FSLH   &kp N7  &kp N8  &kp N9      &kp MINUS     &mkp MB4      &mkp MB5      &trans        &kp LPAR      &kp RPAR      &kp BACKSPACE
+&trans  &kp STAR   &kp N4  &kp N5  &kp N6      &kp PLUS      &trans        &kp LBRC      &kp RBRC      &kp LBKT      &kp RBKT      &kp PIPE
+&trans  &kp COMMA  &kp N1  &kp N2  &kp N3      &kp EQUAL     &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4  &kp EQUAL
+                           &trans  &kp DOT     &kp N0        &trans        &trans        &trans
             >;
         };
 
@@ -112,17 +100,18 @@
 
             // -------------------------------------------------------------------------------
             // |       |  !  |  @  |  #   |  $   |  %   |   |  \   | HOME | PGDN | PGUP | END |  DEL  |
-            // |       |  ^  |  &  |  *   |  -   |  _   |   |      |  <-  |  v   |  ^   |  -> |       |
+            // | A+TAB |  ^  |  &  |  *   |  -   |  _   |   |      |  <-  |  v   |  ^   |  -> |       |
             // |       |  `  |  ~  |  +   |      |      |   |      |      |      |      |     |       |
-            //                     |      |      |  ▽   |   |  ▼   |      |      |
-            // Left half = the Sofle number row's symbols (+ the old RAISE corner +).
+            //                     |      |      |SYSTEM|   |  ▼   |      |      |
+            // Left half = the Sofle number row's symbols. RAISE+Tab = Alt+Tab.
+            // Holding the Space thumb here reaches SYSTEM (both inner thumbs).
             // Trackpad scrolls on this layer (see trackpad_listener override below).
 
             bindings = <
-&trans  &kp EXCL   &kp AT     &kp HASH  &kp DLLR   &kp PRCNT    &kp BSLH  &kp HOME  &kp PG_DN  &kp PG_UP  &kp END    &kp DEL
-&trans  &kp CARET  &kp AMPS   &kp STAR  &kp MINUS  &kp UNDER    &trans    &kp LEFT  &kp DOWN   &kp UP     &kp RIGHT  &trans
-&trans  &kp GRAVE  &kp TILDE  &kp PLUS  &trans     &trans       &trans    &trans    &trans     &trans     &trans     &trans
-                              &trans    &trans     &trans       &trans    &trans    &trans
+&trans        &kp EXCL   &kp AT     &kp HASH  &kp DLLR   &kp PRCNT     &kp BSLH  &kp HOME  &kp PG_DN  &kp PG_UP  &kp END    &kp DEL
+&kp LA(TAB)   &kp CARET  &kp AMPS   &kp STAR  &kp MINUS  &kp UNDER     &trans    &kp LEFT  &kp DOWN   &kp UP     &kp RIGHT  &trans
+&trans        &kp GRAVE  &kp TILDE  &kp PLUS  &trans     &trans        &trans    &trans    &trans     &trans     &trans     &trans
+                                    &trans    &trans     &mo SYSTEM    &trans    &trans    &trans
             >;
         };
 
@@ -131,16 +120,17 @@
 
             // Ctrl+Alt chords (KVM / remote-session control) + NumLock
             // -------------------------------------------------------------------------------
-            // |  |  |  |  |  |  |   |         |         |        | NUMLK |  |  |
-            // |  |  |  |  |  |  |   |         | C-A-Brk | C-A-End| C-A-D |  |  |
-            // |  |  |  |  |  |  |   |         |         |        |       |  |  |
-            //          |  |  |  |   |         |         |        |
+            // |  |  |  |  |     |  |   |         |         |        | NUMLK |  |  |
+            // |  |  |  |  | sC+A|  |   |         | C-A-Brk | C-A-End| C-A-D |  |  |
+            // |  |  |  |  |     |  |   |         |         |        |       |  |  |
+            //          |  |     |  |   |         |         |        |
+            // (sC+A = sticky Ctrl+Alt: tap, then tap any key to send Ctrl+Alt+key.)
 
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans                   &trans           &trans           &kp KP_NUM  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &kp LC(LA(PAUSE_BREAK))  &kp LC(LA(END))  &kp LC(LA(DEL))  &trans      &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans                   &trans           &trans           &trans      &trans
-                        &trans  &trans  &trans    &trans  &trans                   &trans
+&trans  &trans  &trans  &trans  &trans          &trans    &trans  &trans                   &trans           &trans           &kp KP_NUM  &trans
+&trans  &trans  &trans  &trans  &sk LC(LALT)    &trans    &trans  &kp LC(LA(PAUSE_BREAK))  &kp LC(LA(END))  &kp LC(LA(DEL))  &trans      &trans
+&trans  &trans  &trans  &trans  &trans          &trans    &trans  &trans                   &trans           &trans           &trans      &trans
+                        &trans  &trans          &trans    &trans  &trans                   &trans
             >;
         };
 
@@ -163,7 +153,7 @@
             // |  F1   |  F2  |  F3  |  F4  |  F5  |  F6  |   |  F7    |  F8  |  F9  | F10  | F11 |  F12 |
             // |       | BT0  | BT1  | BT2  | BT3  | BT4  |   | BT_CLR | oBLE | oUSB | oTOG |     |      |
             // |       | MUTE | VOL- | VOL+ | PLAY |      |   |        | DEL  | END  | PAUSE| ESC |      |
-            //                       |      |      |      |   |        |      |      |
+            //                       |      |      |  ▼   |   |   ▼    |      |      |
             // (oBLE/oUSB/oTOG = output endpoint selection; the preference persists in flash.
             //  MUTE/VOL/PLAY replace the Sofle encoders and the old ALT double-tap.)
 
@@ -186,7 +176,7 @@
 };
 
 // Scroll on RAISE only (Sofle behaviour). Stock Toucan also scrolls on layer 1,
-// which would break LOWER's left-hand mouse buttons while pointing/dragging.
+// which would turn the pad into a scroller while the numpad (LOWER) is held.
 &trackpad_listener {
     scroller {
         layers = <RAISE>;
