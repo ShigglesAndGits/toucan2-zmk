@@ -13,6 +13,8 @@ copy reloads itself every minute.
 
 ## Flashing
 
+0. Shortcut: `scripts/flash-when-ready.sh "firmware/<file>.uf2"` waits for the
+   XIAO drive and copies the file for you (run once per half).
 1. Push; GitHub Actions builds the firmware. Download the `firmware` artifact
    from the run and unzip it.
 2. Plug the **left** half in with a data USB-C cable and double-tap the RST
