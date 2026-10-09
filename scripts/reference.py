@@ -26,6 +26,8 @@ REACH = {
     "WORK": "double-tap + hold right inner thumb",
     "MOU": "automatic while a finger is on the trackpad",
     "SYSTEM": "hold RAISE + left centre (Space) thumb",
+    "GAME": "LOWER + Esc corner (also jumps to Play) &middot; leave: hold corner + left outer thumb",
+    "NUM": "in GAME: hold the Esc corner",
 }
 
 NOTES = [
@@ -38,6 +40,7 @@ NOTES = [
     ("Profiles", "BT 0&ndash;4 on LOWER bottom-left &middot; BT Clr on SYSTEM"),
     ("Output", "Out BLE / USB / Tog on SYSTEM (persists in flash)"),
     ("Gestures", "3-finger swipe = Super+arrow (column focus) &middot; pinch = Ctrl+−/= zoom"),
+    ("Gaming", "LOWER + Esc corner = GAME + Play workspace &middot; corner + outer thumb = back to BASE + workspace 1"),
     ("Trackpad", "scrolls on RAISE &middot; while touching: S/D/F = R/M/L click, W/R = back/fwd"),
 ]
 
@@ -54,6 +57,7 @@ PRETTY = {
     "Ctl+Alt+PAUSE BREAK": "C-A-Brk", "&mkp LCLK": "LMB", "&mkp RCLK": "RMB",
     "&mkp MCLK": "MMB", "Gui+LEFT": "◆←", "Gui+RIGHT": "◆→", "Gui+UP": "◆↑",
     "Gui+DOWN": "◆↓", "Alt+TAB": "Alt⇥",
+    "&game_on": "GAME ▶", "&game_off": "◀ Desk",
 }
 LAYER_NAMES = set(REACH) | {"WORK"}
 MODS = {"⇧ Shift", "Ctrl", "Alt", "◆ Super"}
@@ -112,6 +116,8 @@ def key_html(binding):
 
 def board(name, bindings, phys):
     width, height = 1400, 440
+    if name == "NUM":  # the Esc corner (0) is held
+        bindings = [{"type": "held"} if i == 0 else b for i, b in enumerate(bindings)]
     if name == "SYSTEM":  # RAISE (39) + left centre thumb (37) are held
         bindings = [{"type": "held"} if i in (37, 39) else b for i, b in enumerate(bindings)]
     keys = []

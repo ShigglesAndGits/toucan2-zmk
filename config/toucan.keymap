@@ -18,6 +18,12 @@
  * left centre thumb) with operators + BLE profiles on the left. SYSTEM (used twice) = RAISE + the left
  * centre (Space) thumb.
  *
+ * GAME (LOWER + Esc corner) = BASE with Alt/Space/Ctrl thumbs, plain Esc, and
+ * numbers + F-keys under the left hand while the Esc corner is held (NUM).
+ * Entering also jumps to the Play workspace (Super+L); leaving (hold the corner
+ * + left outer thumb) jumps to workspace 1 (Super+1). GAME sits just above
+ * BASE so LOWER/RAISE still work over it.
+ *
  * Layer 4 MUST stay the mouse layer: toucan.dtsi's is_touching_processor
  * activates layer 4 while a finger is on the trackpad.
  */
@@ -29,11 +35,13 @@
 #include <dt-bindings/zmk/pointing.h>
 
 #define BASE 0
-#define LOWER 1
-#define RAISE 2
-#define WORK 3
+#define GAME 1
+#define LOWER 2
+#define RAISE 3
 #define MOUSE 4
-#define SYSTEM 5
+#define WORK 5
+#define SYSTEM 6
+#define NUM 7
 
 / {
     behaviors {
@@ -54,6 +62,31 @@
             flavor = "tap-preferred";
             tapping-term-ms = <200>;
             bindings = <&kp>, <&kp>;
+        };
+
+        // GAME's Esc corner: tap = Esc, hold = NUM. Balanced, so holding the
+        // corner and tapping Q gives 1 even inside the tapping term.
+        ht_num_esc: hold_num_tap_esc {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            bindings = <&mo>, <&kp>;
+        };
+    };
+
+    macros {
+        // &to is idempotent, so pressing "game on" while already in GAME is harmless.
+        game_on: game_on {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &to GAME &kp LG(L)>;
+        };
+
+        game_off: game_off {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp LG(N1) &to BASE>;
         };
     };
 
@@ -80,11 +113,31 @@
             >;
         };
 
+        game {
+            display-name = "GAME";
+
+            // BASE with gaming thumbs; the right half stays BASE (chat types normally).
+            // -------------------------------------------------------------------------------
+            // | Esc/NUM |  Q  |  W  |  E  |  R  |  T  |   |                (BASE)                |
+            // |   TAB   |  A  |  S  |  D  |  F  |  G  |   |                                      |
+            // |  SHIFT  |  Z  |  X  |  C  |  V  |  B  |   |                                      |
+            //                   | ALT | SPACE| CTRL |   |
+            // Plain Esc (no hold-Alt delay, Alt is the thumb); Super is off the thumbs
+            // so it can't be hit mid-game. Hold the Esc corner for NUM.
+
+            bindings = <
+&ht_num_esc NUM ESC  &trans  &trans  &trans    &trans     &trans       &trans  &trans  &trans  &trans  &trans  &trans
+&trans               &trans  &trans  &trans    &trans     &trans       &trans  &trans  &trans  &trans  &trans  &trans
+&trans               &trans  &trans  &trans    &trans     &trans       &trans  &trans  &trans  &trans  &trans  &trans
+                                     &kp LALT  &kp SPACE  &kp LCTRL    &trans  &trans  &trans
+            >;
+        };
+
         lower {
             display-name = "LOWER";
 
             // -------------------------------------------------------------------------------
-            // |       |  \  |  <  |  >   |  -   |  +   |   |  7   |  8   |  9  |  (  |  )  | BKSPC |
+            // | GAME  |  \  |  <  |  >   |  -   |  +   |   |  7   |  8   |  9  |  (  |  )  | BKSPC |
             // |       |     |  ,  |  .   |  *   |  /   |   |  4   |  5   |  6  |  [  |  ]  |   |   |
             // |       | BT0 | BT1 | BT2  | BT3  | BT4  |   |  1   |  2   |  3  |  {  |  }  |   =   |
             //                     |      |  0   |      |   |      |      |  ▼  |
@@ -92,9 +145,10 @@
             // outer columns). The Sofle's 0 / . * thumbs don't fit under a held right
             // thumb, so 0 is the left centre thumb and the operators sit on the left.
             // BLE profile select stays on the bottom-left row (Sofle spot).
+            // GAME (Esc corner) = enter gaming mode + jump to the Play workspace.
 
             bindings = <
-&trans  &kp BSLH      &kp LT        &kp GT        &kp MINUS     &kp PLUS        &kp N7  &kp N8  &kp N9  &kp LPAR  &kp RPAR  &kp BACKSPACE
+&game_on  &kp BSLH    &kp LT        &kp GT        &kp MINUS     &kp PLUS        &kp N7  &kp N8  &kp N9  &kp LPAR  &kp RPAR  &kp BACKSPACE
 &trans  &trans        &kp COMMA     &kp DOT       &kp STAR      &kp FSLH        &kp N4  &kp N5  &kp N6  &kp LBKT  &kp RBKT  &kp PIPE
 &trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4    &kp N1  &kp N2  &kp N3  &kp LBRC  &kp RBRC  &kp EQUAL
                                     &trans        &kp N0        &trans          &trans  &trans  &trans
@@ -124,6 +178,20 @@
             >;
         };
 
+        // Active while a finger is on the trackpad (toucan.dtsi -> &mo 4).
+        // Mouse buttons sit where they were on the Sofle's LOWER layer, no
+        // layer key needed: W/R = back/forward, S/D/F = right/middle/left click.
+        // Thumbs stay transparent so GUI/Ctrl/RAISE keep working mid-touch.
+        mouse {
+            display-name = "MOU";
+            bindings = <
+&trans  &trans  &mkp MB4   &trans     &mkp MB5   &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &mkp RCLK  &mkp MCLK  &mkp LCLK  &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans     &trans     &trans     &trans    &trans  &trans  &trans  &trans  &trans  &trans
+                           &trans     &trans     &trans    &trans  &trans  &trans
+            >;
+        };
+
         work {
             display-name = "WORK";
 
@@ -143,20 +211,6 @@
             >;
         };
 
-        // Active while a finger is on the trackpad (toucan.dtsi -> &mo 4).
-        // Mouse buttons sit where they were on the Sofle's LOWER layer, no
-        // layer key needed: W/R = back/forward, S/D/F = right/middle/left click.
-        // Thumbs stay transparent so GUI/Ctrl/RAISE keep working mid-touch.
-        mouse {
-            display-name = "MOU";
-            bindings = <
-&trans  &trans  &mkp MB4   &trans     &mkp MB5   &trans    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &mkp RCLK  &mkp MCLK  &mkp LCLK  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans     &trans     &trans     &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                           &trans     &trans     &trans    &trans  &trans  &trans
-            >;
-        };
-
         system {
             display-name = "SYSTEM";
 
@@ -173,6 +227,25 @@
 &trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4    &bt BT_CLR  &out OUT_BLE  &out OUT_USB  &out OUT_TOG     &trans   &trans
 &trans  &kp C_MUTE    &kp C_VOL_DN  &kp C_VOL_UP  &kp C_PP      &trans          &trans      &kp DEL       &kp END       &kp PAUSE_BREAK  &kp ESC  &trans
                                     &trans        &trans        &trans          &trans      &trans        &trans
+            >;
+        };
+
+        num {
+            display-name = "NUM";
+
+            // GAME + hold the Esc corner (pinky). Number-row columns: 1 sits over Q.
+            // -------------------------------------------------------------------------------
+            // |  ▼   |  1  |  2  |  3  |  4  |  5  |
+            // |      |  6  |  7  |  8  |  9  |  0  |
+            // |      | F1  | F2  | F3  | F4  | F5  |
+            //               | DESK | SPACE| CTRL |
+            // DESK = Super+1 and back to BASE (leave gaming mode).
+
+            bindings = <
+&trans  &kp N1  &kp N2  &kp N3     &kp N4  &kp N5       &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &kp N6  &kp N7  &kp N8     &kp N9  &kp N0       &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &kp F1  &kp F2  &kp F3     &kp F4  &kp F5       &trans  &trans  &trans  &trans  &trans  &trans
+                        &game_off  &trans  &trans       &trans  &trans  &trans
             >;
         };
 
