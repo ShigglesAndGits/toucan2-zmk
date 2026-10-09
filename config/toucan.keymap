@@ -64,16 +64,17 @@
             display-name = "BASE";
 
             // -------------------------------------------------------------------------------
-            // | Esc/A |  Q  |  W  |  E   |  R   |  T   |   |  Y   |  U   |  I  |  O  |  P |   '   |
-            // |  TAB  |  A  |  S  |  D   |  F   |  G   |   |  H   |  J   |  K  |  L  |  ; | BKSPC |
+            // | Esc/A |  Q  |  W  |  E   |  R   |  T   |   |  Y   |  U   |  I  |  O  |  P | BKSPC |
+            // |  TAB  |  A  |  S  |  D   |  F   |  G   |   |  H   |  J   |  K  |  L  |  ; |   '   |
             // | SHIFT |  Z  |  X  |  C   |  V   |  B   |   |  N   |  M   |  ,  |  .  |  / |   -   |
             //                     | GUI  | SPACE| CTRL |   | RSE/WORK | ENTER | LOWER |
-            // (Esc/A = tap Esc, hold Alt. Backspace on the pinky home key: 1445 presses +
-            //  462 Ctrl+Backspace vs 438 for '. Right Shift was pressed once, so it's - / _.)
+            // (Esc/A = tap Esc, hold Alt. Backspace and ' stay in their usual spots - moving
+            //  Backspace to the pinky home key was tried and reverted. Right Shift was pressed
+            //  once, so it's - / _.)
 
             bindings = <
-&ht_alt_esc LALT ESC  &kp Q  &kp W  &kp E     &kp R      &kp T          &kp Y           &kp U      &kp I      &kp O    &kp P     &kp SQT
-&kp TAB               &kp A  &kp S  &kp D     &kp F      &kp G          &kp H           &kp J      &kp K      &kp L    &kp SEMI  &kp BACKSPACE
+&ht_alt_esc LALT ESC  &kp Q  &kp W  &kp E     &kp R      &kp T          &kp Y           &kp U      &kp I      &kp O    &kp P     &kp BACKSPACE
+&kp TAB               &kp A  &kp S  &kp D     &kp F      &kp G          &kp H           &kp J      &kp K      &kp L    &kp SEMI  &kp SQT
 &kp LSHIFT            &kp Z  &kp X  &kp C     &kp V      &kp B          &kp N           &kp M      &kp COMMA  &kp DOT  &kp FSLH  &kp MINUS
                                     &kp LGUI  &kp SPACE  &kp LCTRL      &td_layer_work  &kp ENTER  &mo LOWER
             >;
@@ -83,8 +84,8 @@
             display-name = "LOWER";
 
             // -------------------------------------------------------------------------------
-            // |       |  |  |  (  |  )   |  [   |  ]   |   |  -   |  7   |  8  |  9  |  /  |       |
-            // |       |  \  |  {  |  }   |  <   |  >   |   |  +   |  4   |  5  |  6  |  *  | BKSPC |
+            // |       |  |  |  (  |  )   |  [   |  ]   |   |  -   |  7   |  8  |  9  |  /  | BKSPC |
+            // |       |  \  |  {  |  }   |  <   |  >   |   |  +   |  4   |  5  |  6  |  *  |   '   |
             // |       | BT0 | BT1 | BT2  | BT3  | BT4  |   |  ,   |  1   |  2  |  3  |  .  |   =   |
             //                     |      |  0   |      |   |      |  ENT |  ▼  |
             // Numpad on the right hand (right thumb holds LOWER, Enter stays on the
@@ -92,8 +93,8 @@
             // Left: brackets/pipes, BLE profile select on the bottom row (Sofle spot).
 
             bindings = <
-&trans  &kp PIPE      &kp LPAR      &kp RPAR      &kp LBKT      &kp RBKT        &kp MINUS  &kp N7  &kp N8  &kp N9   &kp FSLH  &trans
-&trans  &kp BSLH      &kp LBRC      &kp RBRC      &kp LT        &kp GT          &kp PLUS   &kp N4  &kp N5  &kp N6   &kp STAR  &kp BACKSPACE
+&trans  &kp PIPE      &kp LPAR      &kp RPAR      &kp LBKT      &kp RBKT        &kp MINUS  &kp N7  &kp N8  &kp N9   &kp FSLH  &kp BACKSPACE
+&trans  &kp BSLH      &kp LBRC      &kp RBRC      &kp LT        &kp GT          &kp PLUS   &kp N4  &kp N5  &kp N6   &kp STAR  &trans
 &trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4    &kp COMMA  &kp N1  &kp N2  &kp N3   &kp DOT   &kp EQUAL
                                     &trans        &kp N0        &trans          &trans     &trans  &trans
             >;
@@ -103,8 +104,8 @@
             display-name = "RAISE";
 
             // -------------------------------------------------------------------------------
-            // |       |  !  |  @  |  #   |  $   |  %   |   |  \   | HOME | PGDN | PGUP | END |       |
-            // | A+TAB |  ^  |  &  |  *   |  -   |  _   |   |      |  <-  |  v   |  ^   |  -> |  DEL  |
+            // |       |  !  |  @  |  #   |  $   |  %   |   |  \   | HOME | PGDN | PGUP | END |  DEL  |
+            // | A+TAB |  ^  |  &  |  *   |  -   |  _   |   |      |  <-  |  v   |  ^   |  -> |       |
             // |       |  `  |  ~  |  +   |      |      |   |      | S+<- | S+v  | S+^  | S+->|       |
             //                     |      |SYSTEM|      |   |  ▼   |      |      |
             // Left half = the Sofle number row's symbols. RAISE+Tab = Alt+Tab.
@@ -115,8 +116,8 @@
             // Trackpad scrolls on this layer (see trackpad_listener override below).
 
             bindings = <
-&trans        &kp EXCL   &kp AT     &kp HASH  &kp DLLR   &kp PRCNT     &kp BSLH  &kp HOME  &kp PG_DN  &kp PG_UP  &kp END    &trans
-&kp LA(TAB)   &kp CARET  &kp AMPS   &kp STAR  &kp MINUS  &kp UNDER     &trans    &kp LEFT  &kp DOWN   &kp UP     &kp RIGHT  &kp DEL
+&trans        &kp EXCL   &kp AT     &kp HASH  &kp DLLR   &kp PRCNT     &kp BSLH  &kp HOME  &kp PG_DN  &kp PG_UP  &kp END    &kp DEL
+&kp LA(TAB)   &kp CARET  &kp AMPS   &kp STAR  &kp MINUS  &kp UNDER     &trans    &kp LEFT  &kp DOWN   &kp UP     &kp RIGHT  &trans
 &trans        &kp GRAVE  &kp TILDE  &kp PLUS  &trans     &trans        &trans    &kp LG(LEFT)  &kp LG(DOWN)  &kp LG(UP)  &kp LG(RIGHT)  &trans
                                     &trans    &mo SYSTEM &trans        &trans    &trans    &trans
             >;
