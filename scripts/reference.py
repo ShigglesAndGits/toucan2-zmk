@@ -32,6 +32,8 @@ NOTES = [
     ("Ctrl", "left middle thumb &middot; GUI outer, Space inner"),
     ("Esc / Alt", "tap for Esc, hold (200ms) for Alt"),
     ("Alt+Tab", "RAISE + Tab"),
+    ("Del", "RAISE + Backspace"),
+    ("Super+arrows", "RAISE + M , . / (column focus)"),
     ("Ctrl+Alt+Del", "WORK &rarr; C-A-Del &middot; sticky Ctrl+Alt also on WORK"),
     ("Profiles", "BT 0&ndash;4 on LOWER bottom-right &middot; BT Clr on SYSTEM"),
     ("Output", "Out BLE / USB / Tog on SYSTEM (persists in flash)"),
