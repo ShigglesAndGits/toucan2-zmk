@@ -25,17 +25,17 @@ REACH = {
     "RAISE": "hold right inner thumb",
     "WORK": "double-tap + hold right inner thumb",
     "MOU": "automatic while a finger is on the trackpad",
-    "SYSTEM": "hold both inner thumbs (RAISE, then Space thumb)",
+    "SYSTEM": "hold RAISE + left centre (Space) thumb",
 }
 
 NOTES = [
-    ("Ctrl", "left middle thumb &middot; GUI outer, Space inner"),
+    ("Thumbs", "left: GUI &middot; Space &middot; Ctrl &nbsp;|&nbsp; right: RAISE &middot; Enter &middot; LOWER"),
     ("Esc / Alt", "tap for Esc, hold (200ms) for Alt"),
     ("Alt+Tab", "RAISE + Tab"),
     ("Del", "RAISE + Backspace"),
     ("Super+arrows", "RAISE + M , . / (column focus)"),
     ("Ctrl+Alt+Del", "WORK &rarr; C-A-Del &middot; sticky Ctrl+Alt also on WORK"),
-    ("Profiles", "BT 0&ndash;4 on LOWER bottom-right &middot; BT Clr on SYSTEM"),
+    ("Profiles", "BT 0&ndash;4 on LOWER bottom-left &middot; BT Clr on SYSTEM"),
     ("Output", "Out BLE / USB / Tog on SYSTEM (persists in flash)"),
     ("Gestures", "3-finger swipe = Super+arrow (column focus) &middot; pinch = Ctrl+−/= zoom"),
     ("Trackpad", "scrolls on RAISE &middot; while touching: S/D/F = R/M/L click, W/R = back/fwd"),
@@ -112,8 +112,8 @@ def key_html(binding):
 
 def board(name, bindings, phys):
     width, height = 1400, 440
-    if name == "SYSTEM":  # tri-layer: both inner thumbs (38, 39) are held
-        bindings = [{"type": "held"} if i in (38, 39) else b for i, b in enumerate(bindings)]
+    if name == "SYSTEM":  # RAISE (39) + left centre thumb (37) are held
+        bindings = [{"type": "held"} if i in (37, 39) else b for i, b in enumerate(bindings)]
     keys = []
     for (x, y, rot, rx, ry), binding in zip(phys, bindings):
         cls, inner = key_html(binding)

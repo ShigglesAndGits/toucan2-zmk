@@ -4,7 +4,8 @@
  *
  * The Toucan is 3x6 + 3 thumbs per side with no number row and no encoder.
  * Thumb assignments follow the Sofle keystroke captures (Aug 2026, 61.6k presses):
- *   left  outer->inner: GUI (810), CTRL (639), SPACE (8397)
+ *   left  outer->inner: GUI (810), SPACE (8397), CTRL (639)  (Space centred to
+ *   mirror Enter, per Alex)
  *   right inner->outer: RAISE/WORK (998), ENTER (583), LOWER (144)
  * CTRL is a plain thumb key because its top partners are Backspace (464),
  * V/A/C and Shift - a pinky mod-tap can't chord with A/Z/Shift.
@@ -13,9 +14,9 @@
  * off the thumbs: Alt = hold Esc, Alt+Tab = RAISE+Tab, Del = RAISE+Backspace,
  * sticky Ctrl+Alt + Ctrl+Alt chords on WORK.
  *
- * LOWER is a left-hand numpad (7-8-9 on W-E-R, 0 on the Space thumb) so the
- * right hand can stay on the trackpad. SYSTEM (used twice) = hold both inner
- * thumbs, i.e. RAISE + the Space thumb.
+ * LOWER = right-hand numpad (7-8-9 on U-I-O, 0 on the left centre thumb) with
+ * brackets + BLE profiles on the left. SYSTEM (used twice) = RAISE + the left
+ * centre (Space) thumb.
  *
  * Layer 4 MUST stay the mouse layer: toucan.dtsi's is_touching_processor
  * activates layer 4 while a finger is on the trackpad.
@@ -66,7 +67,7 @@
             // | Esc/A |  Q  |  W  |  E   |  R   |  T   |   |  Y   |  U   |  I  |  O  |  P |   '   |
             // |  TAB  |  A  |  S  |  D   |  F   |  G   |   |  H   |  J   |  K  |  L  |  ; | BKSPC |
             // | SHIFT |  Z  |  X  |  C   |  V   |  B   |   |  N   |  M   |  ,  |  .  |  / |   -   |
-            //                     | GUI  | CTRL | SPACE|   | RSE/WORK | ENTER | LOWER |
+            //                     | GUI  | SPACE| CTRL |   | RSE/WORK | ENTER | LOWER |
             // (Esc/A = tap Esc, hold Alt. Backspace on the pinky home key: 1445 presses +
             //  462 Ctrl+Backspace vs 438 for '. Right Shift was pressed once, so it's - / _.)
 
@@ -74,7 +75,7 @@
 &ht_alt_esc LALT ESC  &kp Q  &kp W  &kp E     &kp R      &kp T          &kp Y           &kp U      &kp I      &kp O    &kp P     &kp SQT
 &kp TAB               &kp A  &kp S  &kp D     &kp F      &kp G          &kp H           &kp J      &kp K      &kp L    &kp SEMI  &kp BACKSPACE
 &kp LSHIFT            &kp Z  &kp X  &kp C     &kp V      &kp B          &kp N           &kp M      &kp COMMA  &kp DOT  &kp FSLH  &kp MINUS
-                                    &kp LGUI  &kp LCTRL  &kp SPACE      &td_layer_work  &kp ENTER  &mo LOWER
+                                    &kp LGUI  &kp SPACE  &kp LCTRL      &td_layer_work  &kp ENTER  &mo LOWER
             >;
         };
 
@@ -82,17 +83,19 @@
             display-name = "LOWER";
 
             // -------------------------------------------------------------------------------
-            // |       |  /  |  7  |  8   |  9   |  -   |   | MB4  | MB5  |     |  (  |  )  |   |   |
-            // |       |  *  |  4  |  5   |  6   |  +   |   |      |  {   |  }  |  [  |  ]  | BKSPC |
-            // |       |  ,  |  1  |  2   |  3   |  =   |   | BT0  | BT1  | BT2 | BT3 | BT4 |   =   |
-            //                     |      |  .   |  0   |   |      |      |  ▼  |
-            // Left-hand numpad; right hand keeps brackets + BLE profile select.
+            // |       |  |  |  (  |  )   |  [   |  ]   |   |  -   |  7   |  8  |  9  |  /  |       |
+            // |       |  \  |  {  |  }   |  <   |  >   |   |  +   |  4   |  5  |  6  |  *  | BKSPC |
+            // |       | BT0 | BT1 | BT2  | BT3  | BT4  |   |  ,   |  1   |  2  |  3  |  .  |   =   |
+            //                     |      |  0   |      |   |      |  ENT |  ▼  |
+            // Numpad on the right hand (right thumb holds LOWER, Enter stays on the
+            // centre thumb); 0 on the left centre thumb like a numpad's wide 0.
+            // Left: brackets/pipes, BLE profile select on the bottom row (Sofle spot).
 
             bindings = <
-&trans  &kp FSLH   &kp N7  &kp N8  &kp N9      &kp MINUS     &mkp MB4      &mkp MB5      &trans        &kp LPAR      &kp RPAR      &kp PIPE
-&trans  &kp STAR   &kp N4  &kp N5  &kp N6      &kp PLUS      &trans        &kp LBRC      &kp RBRC      &kp LBKT      &kp RBKT      &kp BACKSPACE
-&trans  &kp COMMA  &kp N1  &kp N2  &kp N3      &kp EQUAL     &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4  &kp EQUAL
-                           &trans  &kp DOT     &kp N0        &trans        &trans        &trans
+&trans  &kp PIPE      &kp LPAR      &kp RPAR      &kp LBKT      &kp RBKT        &kp MINUS  &kp N7  &kp N8  &kp N9   &kp FSLH  &trans
+&trans  &kp BSLH      &kp LBRC      &kp RBRC      &kp LT        &kp GT          &kp PLUS   &kp N4  &kp N5  &kp N6   &kp STAR  &kp BACKSPACE
+&trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4    &kp COMMA  &kp N1  &kp N2  &kp N3   &kp DOT   &kp EQUAL
+                                    &trans        &kp N0        &trans          &trans     &trans  &trans
             >;
         };
 
@@ -103,18 +106,19 @@
             // |       |  !  |  @  |  #   |  $   |  %   |   |  \   | HOME | PGDN | PGUP | END |       |
             // | A+TAB |  ^  |  &  |  *   |  -   |  _   |   |      |  <-  |  v   |  ^   |  -> |  DEL  |
             // |       |  `  |  ~  |  +   |      |      |   |      | S+<- | S+v  | S+^  | S+->|       |
-            //                     |      |      |SYSTEM|   |  ▼   |      |      |
+            //                     |      |SYSTEM|      |   |  ▼   |      |      |
             // Left half = the Sofle number row's symbols. RAISE+Tab = Alt+Tab.
             // S+arrows = Super+arrow (Hyprland column focus, the top chord at 1340
             // presses) as a 2-key chord under the arrows. RAISE+Backspace = Del.
-            // Holding the Space thumb here reaches SYSTEM (both inner thumbs).
+            // Holding the left centre (Space) thumb here reaches SYSTEM; it is not
+            // on the inner thumb so Ctrl stays Ctrl even if RAISE goes down first.
             // Trackpad scrolls on this layer (see trackpad_listener override below).
 
             bindings = <
 &trans        &kp EXCL   &kp AT     &kp HASH  &kp DLLR   &kp PRCNT     &kp BSLH  &kp HOME  &kp PG_DN  &kp PG_UP  &kp END    &trans
 &kp LA(TAB)   &kp CARET  &kp AMPS   &kp STAR  &kp MINUS  &kp UNDER     &trans    &kp LEFT  &kp DOWN   &kp UP     &kp RIGHT  &kp DEL
 &trans        &kp GRAVE  &kp TILDE  &kp PLUS  &trans     &trans        &trans    &kp LG(LEFT)  &kp LG(DOWN)  &kp LG(UP)  &kp LG(RIGHT)  &trans
-                                    &trans    &trans     &mo SYSTEM    &trans    &trans    &trans
+                                    &trans    &mo SYSTEM &trans        &trans    &trans    &trans
             >;
         };
 
