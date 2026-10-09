@@ -1,5 +1,35 @@
 # ZMK config for beekeeb Toucan2 Keyboard
 
+Alex's fork of [beekeeb/zmk-keyboard-toucan2](https://github.com/beekeeb/zmk-keyboard-toucan2)
+(remote `upstream`), with the keymap ported from
+[sofle-hybrid-ergomech](https://github.com/ShigglesAndGits/sofle-hybrid-ergomech).
+Only `config/toucan.keymap` differs from upstream so far.
+
+## Reference sheet
+
+`reference.html` shows every layer on the real key geometry. After editing the
+keymap, run `scripts/reference.py` (needs `pipx install keymap-drawer`); an open
+copy reloads itself every minute.
+
+## Flashing
+
+1. Push; GitHub Actions builds the firmware. Download the `firmware` artifact
+   from the run and unzip it.
+2. Plug the **left** half in with a data USB-C cable and double-tap the RST
+   button on the XIAO (beside the USB-C port; support the acrylic plate while
+   pressing). A drive named `XIAO...` mounts.
+3. Copy `toucan_left rgbled_adapter nice_view_gem-seeeduino_xiao_ble-zmk.uf2`
+   onto it. It reboots by itself after ~5-10 s, so ignore any "not ejected
+   properly" warning.
+4. Repeat with the **right** half and the `toucan_right ...` file.
+5. The halves stay paired. Use `settings_reset` only if they stop finding
+   each other: flash it to both halves, then the real firmware again.
+
+Keymap edits saved through ZMK Studio override the flashed keymap until you
+choose "Restore stock settings" in Studio.
+
+## Upstream notes
+
 [The beekeeb Toucan2 Keyboard](https://beekeeb.com/introducing-toucan2/) is a wireless split 42-key column‑stagger keyboard that a display and a trackpad, with an aggressive stagger on the pinky columns.
 
 # Customizations

@@ -1,10 +1,9 @@
 # Config for keymap-drawer (https://github.com/caksoylar/keymap-drawer).
 # Regenerate the diagram after keymap changes:
-#   keymap -c keymap_drawer.config.yaml parse -z config/sofle_ergomech.keymap -o sofle_ergomech.yaml
-#   keymap -c keymap_drawer.config.yaml draw sofle_ergomech.yaml -j config/info.json -o keymap.svg
+#   keymap -c keymap_drawer.config.yaml parse -z config/toucan.keymap -o toucan.yaml
+#   keymap -c keymap_drawer.config.yaml draw toucan.yaml -d boards/shields/toucan/toucan.dtsi -o keymap.svg
 parse_config:
   raw_binding_map:
-    "&td_alt_media": {t: "ALT", s: "x2 ⏯"}
     "&td_layer_work": {t: "RAISE", s: "x2 WORK"}
     "&mkp MB1": "LMB"
     "&mkp MB2": "RMB"
