@@ -14,8 +14,8 @@
  * off the thumbs: Alt = hold Esc, Alt+Tab = RAISE+Tab, Del = RAISE+Backspace,
  * sticky Ctrl+Alt + Ctrl+Alt chords on WORK.
  *
- * LOWER = right-hand numpad (7-8-9 on U-I-O, 0 on the left centre thumb) with
- * brackets + BLE profiles on the left. SYSTEM (used twice) = RAISE + the left
+ * LOWER = the Sofle's right-hand numpad + brackets (7-8-9 on Y-U-I, 0 on the
+ * left centre thumb) with operators + BLE profiles on the left. SYSTEM (used twice) = RAISE + the left
  * centre (Space) thumb.
  *
  * Layer 4 MUST stay the mouse layer: toucan.dtsi's is_touching_processor
@@ -84,19 +84,20 @@
             display-name = "LOWER";
 
             // -------------------------------------------------------------------------------
-            // |       |  |  |  (  |  )   |  [   |  ]   |   |  -   |  7   |  8  |  9  |  /  | BKSPC |
-            // |       |  \  |  {  |  }   |  <   |  >   |   |  +   |  4   |  5  |  6  |  *  |   '   |
-            // |       | BT0 | BT1 | BT2  | BT3  | BT4  |   |  ,   |  1   |  2  |  3  |  .  |   =   |
-            //                     |      |  0   |      |   |      |  ENT |  ▼  |
-            // Numpad on the right hand (right thumb holds LOWER, Enter stays on the
-            // centre thumb); 0 on the left centre thumb like a numpad's wide 0.
-            // Left: brackets/pipes, BLE profile select on the bottom row (Sofle spot).
+            // |       |  \  |  <  |  >   |  -   |  +   |   |  7   |  8   |  9  |  (  |  )  | BKSPC |
+            // |       |     |  ,  |  .   |  *   |  /   |   |  4   |  5   |  6  |  [  |  ]  |   |   |
+            // |       | BT0 | BT1 | BT2  | BT3  | BT4  |   |  1   |  2   |  3  |  {  |  }  |   =   |
+            //                     |      |  0   |      |   |      |      |  ▼  |
+            // Right half is the Sofle's LOWER verbatim (7-8-9 on Y-U-I, brackets on the
+            // outer columns). The Sofle's 0 / . * thumbs don't fit under a held right
+            // thumb, so 0 is the left centre thumb and the operators sit on the left.
+            // BLE profile select stays on the bottom-left row (Sofle spot).
 
             bindings = <
-&trans  &kp PIPE      &kp LPAR      &kp RPAR      &kp LBKT      &kp RBKT        &kp MINUS  &kp N7  &kp N8  &kp N9   &kp FSLH  &kp BACKSPACE
-&trans  &kp BSLH      &kp LBRC      &kp RBRC      &kp LT        &kp GT          &kp PLUS   &kp N4  &kp N5  &kp N6   &kp STAR  &trans
-&trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4    &kp COMMA  &kp N1  &kp N2  &kp N3   &kp DOT   &kp EQUAL
-                                    &trans        &kp N0        &trans          &trans     &trans  &trans
+&trans  &kp BSLH      &kp LT        &kp GT        &kp MINUS     &kp PLUS        &kp N7  &kp N8  &kp N9  &kp LPAR  &kp RPAR  &kp BACKSPACE
+&trans  &trans        &kp COMMA     &kp DOT       &kp STAR      &kp FSLH        &kp N4  &kp N5  &kp N6  &kp LBKT  &kp RBKT  &kp PIPE
+&trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4    &kp N1  &kp N2  &kp N3  &kp LBRC  &kp RBRC  &kp EQUAL
+                                    &trans        &kp N0        &trans          &trans  &trans  &trans
             >;
         };
 
