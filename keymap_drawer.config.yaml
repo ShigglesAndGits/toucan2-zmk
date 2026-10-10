@@ -5,6 +5,7 @@
 parse_config:
   raw_binding_map:
     "&td_layer_work": {t: "RAISE", s: "x2 WORK"}
+    "&td_ctrl_lower": {t: "Ctrl", s: "x2 LOWER"}
     "&mkp MB1": "LMB"
     "&mkp MB2": "RMB"
     "&mkp MB3": "MMB"

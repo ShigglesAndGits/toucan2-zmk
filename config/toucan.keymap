@@ -54,6 +54,17 @@
             bindings = <&mo RAISE>, <&mo WORK>;
         };
 
+        // Ctrl thumb: hold = Ctrl; tap-then-hold = LOWER from the left hand, which
+        // frees the right thumbs for 0 (centre) and . (outer) on the numpad.
+        // Another key press resolves it instantly, so Ctrl+key chords are not
+        // delayed; Ctrl alone (e.g. Ctrl+click) waits out the 200ms term.
+        td_ctrl_lower: tap_dance_ctrl_lower {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp LCTRL>, <&mo LOWER>;
+        };
+
         // Esc: tap = Esc, hold = Alt. Tap-preferred so fast Esc-then-key rolls
         // (vim) never turn into Alt chords; Alt needs a deliberate 200ms hold.
         ht_alt_esc: hold_alt_tap_esc {
@@ -101,6 +112,7 @@
             // |  TAB  |  A  |  S  |  D   |  F   |  G   |   |  H   |  J   |  K  |  L  |  ; |   '   |
             // | SHIFT |  Z  |  X  |  C   |  V   |  B   |   |  N   |  M   |  ,  |  .  |  / |   -   |
             //                     | GUI  | SPACE| CTRL |   | RSE/WORK | ENTER | LOWER |
+            // (CTRL: tap, then hold = LOWER from the left thumb.)
             // (Esc/A = tap Esc, hold Alt. Backspace and ' stay in their usual spots - moving
             //  Backspace to the pinky home key was tried and reverted. Right Shift was pressed
             //  once, so it's - / _.)
@@ -109,7 +121,7 @@
 &ht_alt_esc LALT ESC  &kp Q  &kp W  &kp E     &kp R      &kp T          &kp Y           &kp U      &kp I      &kp O    &kp P     &kp BACKSPACE
 &kp TAB               &kp A  &kp S  &kp D     &kp F      &kp G          &kp H           &kp J      &kp K      &kp L    &kp SEMI  &kp SQT
 &kp LSHIFT            &kp Z  &kp X  &kp C     &kp V      &kp B          &kp N           &kp M      &kp COMMA  &kp DOT  &kp FSLH  &kp MINUS
-                                    &kp LGUI  &kp SPACE  &kp LCTRL      &td_layer_work  &kp ENTER  &mo LOWER
+                                    &kp LGUI  &kp SPACE  &td_ctrl_lower &td_layer_work  &kp ENTER  &mo LOWER
             >;
         };
 
@@ -140,18 +152,20 @@
             // | GAME  |  \  |  <  |  >   |  -   |  +   |   |  7   |  8   |  9  |  (  |  )  | BKSPC |
             // |       |     |  ,  |  .   |  *   |  /   |   |  4   |  5   |  6  |  [  |  ]  |   |   |
             // |       | BT0 | BT1 | BT2  | BT3  | BT4  |   |  1   |  2   |  3  |  {  |  }  |   =   |
-            //                     |      |  0   |      |   |      |      |  ▼  |
+            //                     |      |  0   |  ▼*  |   |      |  0   | . ▼ |
             // Right half is the Sofle's LOWER verbatim (7-8-9 on Y-U-I, brackets on the
             // outer columns). The Sofle's 0 / . * thumbs don't fit under a held right
             // thumb, so 0 is the left centre thumb and the operators sit on the left.
             // BLE profile select stays on the bottom-left row (Sofle spot).
             // GAME (Esc corner) = enter gaming mode + jump to the Play workspace.
+            // Two ways in: hold the right outer thumb (0 on the left centre thumb), or
+            // tap-then-hold Ctrl (▼*) and use the right thumbs: centre = 0, outer = .
 
             bindings = <
 &game_on  &kp BSLH    &kp LT        &kp GT        &kp MINUS     &kp PLUS        &kp N7  &kp N8  &kp N9  &kp LPAR  &kp RPAR  &kp BACKSPACE
 &trans  &trans        &kp COMMA     &kp DOT       &kp STAR      &kp FSLH        &kp N4  &kp N5  &kp N6  &kp LBKT  &kp RBKT  &kp PIPE
 &trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4    &kp N1  &kp N2  &kp N3  &kp LBRC  &kp RBRC  &kp EQUAL
-                                    &trans        &kp N0        &trans          &trans  &trans  &trans
+                                    &trans        &kp N0        &trans          &trans  &kp N0  &kp DOT
             >;
         };
 

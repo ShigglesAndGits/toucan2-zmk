@@ -21,7 +21,7 @@ OUT = ROOT / "reference.html"
 # How each layer is reached, shown under its title.
 REACH = {
     "BASE": "default",
-    "LOWER": "hold right outer thumb",
+    "LOWER": "hold right outer thumb &middot; or tap-then-hold Ctrl (right thumbs = 0 and .)",
     "RAISE": "hold right inner thumb",
     "WORK": "double-tap + hold right inner thumb",
     "MOU": "automatic while a finger is on the trackpad",
@@ -116,6 +116,8 @@ def key_html(binding):
 
 def board(name, bindings, phys):
     width, height = 1400, 440
+    if name == "LOWER":  # outer thumb is '.' when LOWER comes from the Ctrl tap-dance
+        bindings = [{"t": ".", "s": "or held"} if i == 41 else b for i, b in enumerate(bindings)]
     if name == "NUM":  # the Esc corner (0) is held
         bindings = [{"type": "held"} if i == 0 else b for i, b in enumerate(bindings)]
     if name == "SYSTEM":  # RAISE (39) + left centre thumb (37) are held
