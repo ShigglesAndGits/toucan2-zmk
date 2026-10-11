@@ -22,8 +22,8 @@ OUT = ROOT / "reference.html"
 REACH = {
     "BASE": "default",
     "LOWER": "hold right outer thumb",
-    "RAISE": "hold right inner thumb",
-    "WORK": "double-tap + hold right inner thumb",
+    "RAISE": "hold right center thumb",
+    "WORK": "double-tap + hold right center thumb",
     "MOU": "automatic while a finger is on the trackpad",
     "SYSTEM": "hold RAISE + left inner (Space) thumb",
     "GAME": "LOWER + Esc corner (also jumps to Play) &middot; leave: hold corner + left outer thumb",
@@ -32,7 +32,7 @@ REACH = {
 }
 
 NOTES = [
-    ("Thumbs", "left: GUI &middot; Ctrl &middot; Space &nbsp;|&nbsp; right: RAISE &middot; Enter &middot; LOWER"),
+    ("Thumbs", "left: GUI &middot; Ctrl &middot; Space &nbsp;|&nbsp; right: Enter &middot; RAISE &middot; LOWER"),
     ("Esc / SYM", "tap for Esc, hold for symbols + numpad"),
     ("Tab / Alt", "tap for Tab, hold (200ms) for Alt"),
     ("Alt+Tab", "RAISE + Tab"),
@@ -123,8 +123,8 @@ def board(name, bindings, phys):
     width, height = 1400, 440
     if name in ("NUM", "SYM"):  # the Esc corner (0) is held
         bindings = [{"type": "held"} if i == 0 else b for i, b in enumerate(bindings)]
-    if name == "SYSTEM":  # RAISE (39) + left inner thumb (38) are held
-        bindings = [{"type": "held"} if i in (38, 39) else b for i, b in enumerate(bindings)]
+    if name == "SYSTEM":  # RAISE (40) + left inner thumb (38) are held
+        bindings = [{"type": "held"} if i in (38, 40) else b for i, b in enumerate(bindings)]
     keys = []
     for (x, y, rot, rx, ry), binding in zip(phys, bindings):
         cls, inner = key_html(binding)

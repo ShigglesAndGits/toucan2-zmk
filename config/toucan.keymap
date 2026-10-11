@@ -6,7 +6,8 @@
  * Thumb assignments follow the Sofle keystroke captures (Aug 2026, 61.6k presses):
  *   left  outer->inner: GUI (810), CTRL (639), SPACE (8397)  (the Sofle's order;
  *   Space-centred was tried and reverted)
- *   right inner->outer: RAISE/WORK (998), ENTER (583), LOWER (144)
+ *   right inner->outer: ENTER (583), RAISE/WORK (998), LOWER (144)  (Enter
+ *   inner to mirror Space, per Alex)
  * CTRL is a plain thumb key because its top partners are Backspace (464),
  * V/A/C and Shift - a pinky mod-tap can't chord with A/Z/Shift.
  * GUI and RAISE stay on opposite hands for Super+RAISE+arrows (~1960 chords).
@@ -106,7 +107,7 @@
             // |Esc/SYM|  Q  |  W  |  E   |  R   |  T   |   |  Y   |  U   |  I  |  O  |  P | BKSPC |
             // | TAB/A |  A  |  S  |  D   |  F   |  G   |   |  H   |  J   |  K  |  L  |  ; |   '   |
             // | SHIFT |  Z  |  X  |  C   |  V   |  B   |   |  N   |  M   |  ,  |  .  |  / |   -   |
-            //                     | GUI  | CTRL | SPACE|   | RSE/WORK | ENTER | LOWER |
+            //                     | GUI  | CTRL | SPACE|   | ENTER | RSE/WORK | LOWER |
             // (Esc/SYM = tap Esc, hold SYM. TAB/A = tap Tab, hold Alt. Backspace and ' stay in their usual spots - moving
             //  Backspace to the pinky home key was tried and reverted. Right Shift was pressed
             //  once, so it's - / _.)
@@ -115,7 +116,7 @@
 &ht_layer SYM ESC     &kp Q  &kp W  &kp E     &kp R      &kp T          &kp Y           &kp U      &kp I      &kp O    &kp P     &kp BACKSPACE
 &ht_alt LALT TAB      &kp A  &kp S  &kp D     &kp F      &kp G          &kp H           &kp J      &kp K      &kp L    &kp SEMI  &kp SQT
 &kp LSHIFT            &kp Z  &kp X  &kp C     &kp V      &kp B          &kp N           &kp M      &kp COMMA  &kp DOT  &kp FSLH  &kp MINUS
-                                    &kp LGUI  &kp LCTRL  &kp SPACE      &td_layer_work  &kp ENTER  &mo LOWER
+                                    &kp LGUI  &kp LCTRL  &kp SPACE      &kp ENTER  &td_layer_work  &mo LOWER
             >;
         };
 
@@ -169,7 +170,7 @@
             // |       |  !  |  @  |  #   |  $   |  %   |   |  \   | HOME | PGDN | PGUP | END |  DEL  |
             // | A+TAB |  ^  |  &  |  *   |  -   |  _   |   |      |  <-  |  v   |  ^   |  -> |       |
             // |       |  `  |  ~  |  +   |      |      |   |      | S+<- | S+v  | S+^  | S+->|       |
-            //                     |      |      |SYSTEM|   |  ▼   |      |      |
+            //                     |      |      |SYSTEM|   |      |  ▼   |      |
             // Left half = the Sofle number row's symbols. RAISE+Tab = Alt+Tab.
             // S+arrows = Super+arrow (Hyprland column focus, the top chord at 1340
             // presses) as a 2-key chord under the arrows. RAISE+Backspace = Del.
@@ -225,7 +226,7 @@
             // |  F1   |  F2  |  F3  |  F4  |  F5  |  F6  |   |  F7    |  F8  |  F9  | F10  | F11 |  F12 |
             // |       | BT0  | BT1  | BT2  | BT3  | BT4  |   | BT_CLR | oBLE | oUSB | oTOG |     |      |
             // | BOOT  | MUTE | VOL- | VOL+ | PLAY |      |   |        | DEL  | END  | PAUSE| ESC | BOOT |
-            //                       |      |      |  ▼   |   |   ▼    |      |      |
+            //                       |      |      |  ▼   |   |        |  ▼   |      |
             // (oBLE/oUSB/oTOG = output endpoint selection; the preference persists in flash.
             //  MUTE/VOL/PLAY replace the Sofle encoders and the old ALT double-tap.
             //  BOOT = UF2 bootloader on the half it's pressed on, so flashing needs no
@@ -266,7 +267,7 @@
             // |  ▼    |  !  |  @  |  #   |  $   |  %   |   |  7   |  8   |  9  |  /  |  *  | BKSPC |
             // |       |  ^  |  &  |  *   |  (   |  )   |   |  4   |  5   |  6  |  -  |  +  |       |
             // |       |  `  |  ~  |  _   |  =   |  |   |   |  1   |  2   |  3  |  ,  |  =  |       |
-            //                     |      |      |      |   |      |  0   |  .  |
+            //                     |      |      |      |   | ENTER|  0   |  .  |
 
             bindings = <
 &trans  &kp EXCL   &kp AT     &kp HASH   &kp DLLR   &kp PRCNT     &kp N7  &kp N8  &kp N9  &kp FSLH   &kp STAR  &kp BACKSPACE
