@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Toucan 2 Keymap</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='7' width='26' height='18' rx='5' fill='%2318212d'/%3E%3Crect x='7' y='11' width='8' height='6' rx='2' fill='%23f4b740'/%3E%3Crect x='17' y='11' width='8' height='6' rx='2' fill='%23f2793a'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#18212d; --plate:#1f2a38; --plate-edge:#2b394b; --cap:#2b3747; --cap-top:#334256; --cap-edge:#3f5068;
+  --ink:#eaf0f6; --muted:#93a1b5; --faint:#5f6e83; --focus:#ffe08a;
+  --base:#dfe6ef; --sym:#f4b740; --lower:#4fc7bf; --raise:#f2793a; --system:#ec5d84;
+  --game:#8dd36b; --num:#c3e68f; --mou:#9aa8ff; --work:#c79bff;
+  --legend:ui-rounded,"SF Pro Rounded","Nunito","Varela Round",system-ui,sans-serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
+  --bg:#eef1f5; --plate:#dfe5ec; --plate-edge:#c9d2dd; --cap:#fbfcfd; --cap-top:#ffffff; --cap-edge:#c3ccd8;
+  --ink:#18212d; --muted:#556275; --faint:#8e9aab; --focus:#b77800;
+  --base:#18212d; --sym:#a66d00; --lower:#0d7f78; --raise:#c24f12; --system:#c02a57;
+  --game:#3f8a1f; --num:#5e7f1c; --mou:#4a58d6; --work:#7b45c9; color-scheme:light;
+}}
+:root[data-theme="light"]{
+  --bg:#eef1f5; --plate:#dfe5ec; --plate-edge:#c9d2dd; --cap:#fbfcfd; --cap-top:#ffffff; --cap-edge:#c3ccd8;
+  --ink:#18212d; --muted:#556275; --faint:#8e9aab; --focus:#b77800;
+  --base:#18212d; --sym:#a66d00; --lower:#0d7f78; --raise:#c24f12; --system:#c02a57;
+  --game:#3f8a1f; --num:#5e7f1c; --mou:#4a58d6; --work:#7b45c9; color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 var(--sans)}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.wrap{max-width:1680px;margin:0 auto;padding:18px 16px 40px}
+
+/* ---- header ---- */
+header.top{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;margin-bottom:14px}
+header.top h1{margin:0;font:750 26px/1 var(--legend);letter-spacing:-.01em}
+header.top h1 span{color:var(--muted);font-weight:500}
+.search{flex:1 1 320px;max-width:560px;position:relative}
+.search input{width:100%;padding:10px 14px 10px 38px;border-radius:12px;border:1px solid var(--plate-edge);
+  background:var(--plate);font-size:16px}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted)}
+.hint{color:var(--muted);font-size:13px}
+
+/* ---- layout ---- */
+.layout{display:grid;gap:18px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:1300px){
+  .layout{grid-template-columns:minmax(0,1.45fr) minmax(380px,1fr);align-items:start}
+  .stage{position:sticky;top:12px}
+}
+
+/* ---- layer tabs ---- */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.tab{--c:var(--base);display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;
+  border:1px solid var(--plate-edge);background:transparent;cursor:pointer;font-weight:600;font-size:14px}
+.tab::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--c)}
+.tab[aria-pressed="true"]{background:var(--c);color:var(--bg);border-color:var(--c)}
+.tab[aria-pressed="true"]::before{background:var(--bg)}
+.layer-reach{color:var(--muted);font-size:14px;margin:0 0 10px;min-height:1.45em}
+.layer-reach b{color:var(--lc);font-weight:650}
+
+/* ---- the keyboard ---- */
+.board{position:relative;width:100%;container-type:inline-size}
+.board .plate{position:absolute;background:var(--plate);border:1px solid var(--plate-edge);border-radius:2.2cqw}
+.key{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--cap);border:1px solid var(--cap-edge);border-radius:1.5cqw;
+  box-shadow:inset 0 -.45cqw 0 rgba(0,0,0,.18), inset 0 .25cqw 0 var(--cap-top);
+  font-family:var(--legend);line-height:1.05;text-align:center;cursor:pointer;padding:0 .3cqw;
+  transition:transform .12s ease, box-shadow .12s ease}
+.key .t{font-weight:700;font-size:2.15cqw;color:var(--kc,var(--ink))}
+.key .t.long{font-size:1.55cqw}
+.key .t.xlong{font-size:1.25cqw}
+.key .s{font-size:1.2cqw;color:var(--muted);margin-top:.3cqw;font-weight:600}
+.key .corner{position:absolute;left:.55cqw;top:.35cqw;font-size:1.05cqw;color:var(--faint);font-weight:600}
+.key.fall .t{color:var(--faint);font-weight:600}
+.key.none .t{color:var(--faint)}
+.key.layer{--kc:var(--lk);border-color:color-mix(in srgb,var(--lk) 55%,var(--cap-edge))}
+.key.layer .s{color:var(--lk)}
+.key.dual .s{color:var(--muted)}
+.key.mod .t{color:var(--muted)}
+.key.held{background:var(--lc);border-color:var(--lc)}
+.key.held .t,.key.held .s,.key.held .corner{color:var(--bg)}
+.key.hot{box-shadow:0 0 0 .35cqw var(--focus), inset 0 -.45cqw 0 rgba(0,0,0,.18);z-index:2}
+.key.pulse{animation:pulse .5s ease-out}
+@keyframes pulse{from{transform:var(--rot) translateY(.35cqw)}to{transform:var(--rot)}}
+.key:hover{z-index:3}
+@media (prefers-reduced-motion:reduce){.key{transition:none}.key.pulse{animation:none}}
+
+/* ---- detail panel ---- */
+.detail{margin-top:14px;background:var(--plate);border:1px solid var(--plate-edge);border-radius:14px;
+  padding:12px 16px;min-height:140px}
+.detail h2{margin:0 0 6px;font:700 18px/1.25 var(--legend)}
+.detail p{margin:4px 0;color:var(--muted)}
+.detail table{border-collapse:collapse;width:100%;margin-top:4px}
+.detail td{padding:3px 8px 3px 0;vertical-align:top}
+.detail td.ln{white-space:nowrap;font-weight:650;color:var(--lc);width:1%}
+.detail td.lg{font-family:var(--legend);font-weight:700;white-space:nowrap;width:1%}
+.detail td.ds{color:var(--muted)}
+.detail h2.has-typed{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
+.typed{font:800 34px/1 var(--legend)}
+
+/* ---- chips (key sequences) ---- */
+.ways{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.way{display:inline-flex;flex-wrap:wrap;gap:3px;align-items:center}
+.or{color:var(--faint);font-size:13px}
+.chip{--c:var(--muted);display:inline-block;padding:1px 8px;border-radius:7px;font:650 13.5px/1.6 var(--legend);
+  background:var(--cap);border:1px solid var(--cap-edge);box-shadow:inset 0 -2px 0 rgba(0,0,0,.15);white-space:nowrap}
+.chip.hold{color:var(--c);border-color:color-mix(in srgb,var(--c) 60%,var(--cap-edge))}
+.chip.plain{background:transparent;border-style:dashed;box-shadow:none;font-weight:600;color:var(--muted)}
+.plus{color:var(--faint);font-size:12px}
+
+/* ---- side column ---- */
+.side h2,.below h2{font:750 19px/1.2 var(--legend);margin:4px 0 10px}
+.results{margin-bottom:18px}
+.results:empty{display:none}
+.group{margin-bottom:16px}
+.group h3{font:700 14.5px/1.3 var(--sans);color:var(--muted);margin:0 0 4px;padding-bottom:4px;border-bottom:1px solid var(--plate-edge)}
+.row{display:grid;grid-template-columns:minmax(0,15em) minmax(0,1fr);gap:4px 12px;padding:5px 6px;border-radius:8px;align-items:center}
+.row:hover,.row:focus-within,.row.on{background:var(--plate)}
+.row .lbl{font-weight:600}
+.row .note{grid-column:2;color:var(--muted);font-size:13px;margin-top:-2px}
+@media (max-width:560px){.row{grid-template-columns:1fr}.row .note{grid-column:1}}
+
+/* ---- symbols ---- */
+.symgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
+.sym{display:flex;gap:10px;align-items:center;padding:6px 8px;border-radius:10px;background:var(--plate);border:1px solid transparent}
+.sym:hover,.sym.on{border-color:var(--plate-edge)}
+.sym .c{font:800 22px/1 var(--legend);width:1.3em;text-align:center;flex:none}
+
+/* ---- all layers ---- */
+.minis{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr))}
+.mini{background:transparent;border:1px solid var(--plate-edge);border-radius:14px;padding:10px 12px}
+.mini h3{margin:0 0 6px;font:700 15px/1.2 var(--legend);color:var(--lc)}
+.mini h3 span{color:var(--muted);font:500 13px var(--sans);margin-left:8px}
+.mini .key{cursor:default}
+section.below{margin-top:28px}
+footer{margin-top:26px;color:var(--faint);font-size:13px}
+footer code{font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Toucan 2 <span>keymap</span></h1>
+    <label class="search">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="7" r="5"/><path d="m11 11 4 4"/></svg>
+      <input id="q" type="search" placeholder="Find a key or action: {, volume, workspace…" autocomplete="off" spellcheck="false" aria-label="Find a key or action">
+    </label>
+    <span class="hint">Type on the keyboard to see where each key lives.</span>
+  </header>
+
+  <div class="layout">
+    <div class="stage">
+      <div class="tabs" role="toolbar" aria-label="Layers"></div>
+      <p class="layer-reach" id="reach"></p>
+      <div class="board" id="board" aria-label="Keyboard"></div>
+      <div class="detail" id="detail" aria-live="polite"></div>
+    </div>
+    <div class="side">
+      <div class="results" id="results"></div>
+      <h2>Common actions</h2>
+      <div id="actions"></div>
+    </div>
+  </div>
+
+  <section class="below">
+    <h2>Every symbol</h2>
+    <div class="symgrid" id="symbols"></div>
+  </section>
+
+  <section class="below">
+    <h2>All layers</h2>
+    <div class="minis" id="minis"></div>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const D = /*__DATA__*/null;
+const $ = (s, el=document) => el.querySelector(s);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const L = Object.fromEntries(D.layers.map(l => [l.name, l]));
+const color = name => `var(--${L[name] ? L[name].color : 'muted'})`;
+const store = { get(k){ try { return localStorage.getItem(k); } catch { return null; } },
+                set(k,v){ try { localStorage.setItem(k,v); } catch {} } };
+
+/* ---------- geometry ---------- */
+const GAP = 0.06;
+function corners(k){
+  const pts = [[k.x,k.y],[k.x+1,k.y],[k.x,k.y+1],[k.x+1,k.y+1]];
+  if (!k.r) return pts;
+  const a = k.r*Math.PI/180, c = Math.cos(a), s = Math.sin(a);
+  return pts.map(([x,y]) => [k.rx + (x-k.rx)*c - (y-k.ry)*s, k.ry + (x-k.rx)*s + (y-k.ry)*c]);
+}
+const all = D.phys.flatMap(corners);
+const minX = Math.min(...all.map(p=>p[0])) - .25, minY = Math.min(...all.map(p=>p[1])) - .25;
+const W = Math.max(...all.map(p=>p[0])) - minX + .25, H = Math.max(...all.map(p=>p[1])) - minY + .25;
+const halfOf = i => (i < 36 ? (i % 12 < 6 ? 0 : 1) : (i < 39 ? 0 : 1));
+
+/* ---------- what a key does, falling through transparent keys ---------- */
+const stackFor = name => name === 'BASE' ? ['BASE'] : name === 'NUM' ? ['NUM','GAME','BASE'] : [name, 'BASE'];
+function resolve(name, pos){
+  for (const n of stackFor(name)) {
+    const k = L[n].keys[pos];
+    if (k.kind !== 'trans') return { k, from: n };
+  }
+  return { k: { kind:'none' }, from: 'BASE' };
+}
+const posName = p => D.posNames[p];
+
+/* ---------- rendering ---------- */
+function renderBoard(host, name, { mini=false } = {}){
+  host.textContent = '';
+  host.style.aspectRatio = `${W} / ${H}`;
+  host.style.setProperty('--lc', color(name));
+  const u = 100 / W;
+  for (const h of [0,1]) {
+    const pts = D.phys.flatMap((k,i) => halfOf(i) === h ? corners(k) : []);
+    const x0 = Math.min(...pts.map(p=>p[0])) - .15, x1 = Math.max(...pts.map(p=>p[0])) + .15;
+    const y0 = Math.min(...pts.map(p=>p[1])) - .15, y1 = Math.max(...pts.map(p=>p[1])) + .15;
+    const plate = el('div','plate');
+    Object.assign(plate.style, { left:`${(x0-minX)*u}cqw`, top:`${(y0-minY)*u}cqw`, width:`${(x1-x0)*u}cqw`, height:`${(y1-y0)*u}cqw` });
+    host.append(plate);
+  }
+  const held = new Set(L[name].held);
+  D.phys.forEach((p, i) => {
+    const key = el(mini ? 'div' : 'button','key');
+    key.dataset.pos = i;
+    const size = (1-GAP)*u;
+    const rot = p.r ? `rotate(${p.r}deg)` : 'none';
+    Object.assign(key.style, {
+      left:`${(p.x-minX+GAP/2)*u}cqw`, top:`${(p.y-minY+GAP/2)*u}cqw`, width:`${size}cqw`, height:`${size}cqw`,
+      transformOrigin:`${(p.rx-p.x-GAP/2)*u}cqw ${(p.ry-p.y-GAP/2)*u}cqw`, transform: rot });
+    key.style.setProperty('--rot', rot);
+    if (held.has(i)) {
+      key.classList.add('held');
+      const own = L.BASE.keys[i];
+      key.append(el('span','t', posName(i).replace(' thumb','')), el('span','s','held'));
+    } else {
+      const { k, from } = resolve(name, i);
+      if (from !== name && name !== 'BASE') key.classList.add('fall');
+      if (k.kind === 'none') { key.classList.add('none'); key.append(el('span','t','·')); }
+      else {
+        const t = el('span','t', k.t);
+        if (k.t.length > 4) t.classList.add(k.t.length > 6 ? 'xlong' : 'long');
+        key.append(t);
+        if (k.s) key.append(el('span','s', k.s));
+        if (k.kind === 'layer') { key.classList.add('layer'); key.style.setProperty('--lk', color(k.layer)); }
+        if (k.kind === 'dual') key.classList.add('dual');
+        if (k.kind === 'mod') key.classList.add('mod');
+      }
+      if (name !== 'BASE' && from === name && i < 36 && !mini) key.append(el('span','corner', L.BASE.keys[i].t));
+    }
+    if (!mini) key.setAttribute('aria-label', describeKey(i, name));
+    host.append(key);
+  });
+}
+
+function describeKey(pos, name){
+  const { k } = resolve(name, pos);
+  return `${posName(pos)}: ${k.desc || k.t || 'nothing'}`;
+}
+
+/* ---------- chips ---------- */
+function chipsEl(chips){
+  const w = el('span','way');
+  chips.forEach((c, i) => {
+    if (i) w.append(el('span','plus','+'));
+    const plain = !!c.gesture;
+    const isHold = /^(hold |tap, hold|gaming mode|touch )/.test(c.t);
+    const ch = el('span', 'chip' + (plain ? ' plain' : '') + (isHold ? ' hold' : ''), c.t);
+    if (isHold && c.layer) ch.style.setProperty('--c', color(c.layer));
+    w.append(ch);
+  });
+  return w;
+}
+function waysEl(ways){
+  const box = el('span','ways');
+  ways.forEach((w, i) => { if (i) box.append(el('span','or','or')); box.append(chipsEl(w)); });
+  return box;
+}
+function targetOf(ways){
+  const w = ways[0] || [];
+  const last = [...w].reverse().find(c => c.layer && 'pos' in c);
+  if (!last) return null;
+  const extra = w.filter(c => 'pos' in c).flatMap(c => [].concat(c.pos));
+  return { layer: last.layer, pos: extra };
+}
+
+/* ---------- state ---------- */
+let current = store.get('toucan-layer');
+if (!L[current]) current = 'BASE';
+let peek = null, peekTimer = null, lastInput = 0;
+const board = $('#board'), detail = $('#detail');
+
+function setLayer(name, { remember=true } = {}){
+  current = name; peek = null;
+  if (remember) store.set('toucan-layer', name);
+  draw();
+}
+function draw(){
+  const name = peek ? peek.layer : current;
+  document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-pressed', String(t.dataset.layer === name)));
+  const reach = $('#reach');
+  reach.style.setProperty('--lc', color(name));
+  reach.textContent = '';
+  reach.append(el('b', null, name), ` · ${L[name].reach}`);
+  renderBoard(board, name);
+  if (peek) for (const p of peek.pos) {
+    const k = board.querySelector(`[data-pos="${p}"]`);
+    if (k) { k.classList.add('hot'); if (peek.pulse) k.classList.add('pulse'); }
+  }
+}
+function showPeek(t, { pulse=false, hold=0 } = {}){
+  if (!t) return;
+  clearTimeout(peekTimer);
+  peek = { ...t, pulse };
+  draw();
+  if (hold) peekTimer = setTimeout(() => { peek = null; draw(); }, hold);
+}
+function clearPeek(){ clearTimeout(peekTimer); if (peek) { peek = null; draw(); } }
+
+/* ---------- detail panel ---------- */
+function idleDetail(){
+  detail.textContent = '';
+  detail.append(el('h2', null, 'Hover a key, or type on your keyboard'));
+  detail.append(el('p', null, 'Each key shows what it does on the selected layer. Faded legends fall through to BASE; a filled key is the one you hold to get here. Click a layer key on the board to jump to that layer.'));
+}
+function keyDetail(pos){
+  detail.textContent = '';
+  const hand = pos >= 36 ? (pos < 39 ? 'left thumb' : 'right thumb') : (halfOf(pos) ? 'right hand' : 'left hand');
+  detail.append(el('h2', null, `${posName(pos)} · ${hand}`));
+  const tb = el('table');
+  for (const l of D.layers) {
+    if (l.held.includes(pos)) continue;
+    const k = l.keys[pos];
+    if (k.kind === 'trans' || k.kind === 'none') continue;
+    if (l.name !== 'BASE' && JSON.stringify(k) === JSON.stringify(L.BASE.keys[pos])) continue;
+    const tr = el('tr');
+    const ln = el('td','ln', l.name); ln.style.setProperty('--lc', color(l.name));
+    tr.append(ln, el('td','lg', k.t + (k.s ? ` / ${k.s}` : '')), el('td','ds', k.desc || ''));
+    tb.append(tr);
+  }
+  detail.append(tb);
+}
+function typedDetail(label, ways, note){
+  detail.textContent = '';
+  const h = el('h2','has-typed');
+  h.append(el('span','typed', label));
+  h.append(waysEl(ways));
+  detail.append(h);
+  if (note) detail.append(el('p', null, note));
+}
+
+/* ---------- tabs ---------- */
+const tabs = $('.tabs');
+for (const l of D.layers) {
+  const b = el('button','tab', l.name);
+  b.dataset.layer = l.name;
+  b.style.setProperty('--c', color(l.name));
+  b.title = l.reach;
+  b.addEventListener('click', () => setLayer(l.name));
+  tabs.append(b);
+}
+
+/* ---------- board interaction ---------- */
+board.addEventListener('mouseover', e => { const k = e.target.closest('.key'); if (k) keyDetail(+k.dataset.pos); });
+board.addEventListener('focusin', e => { const k = e.target.closest('.key'); if (k) keyDetail(+k.dataset.pos); });
+board.addEventListener('click', e => {
+  const k = e.target.closest('.key'); if (!k) return;
+  const { k: b } = resolve(peek ? peek.layer : current, +k.dataset.pos);
+  if (b.kind === 'layer' && L[b.layer]) setLayer(b.layer);
+  else if (b.code === 'game_on') setLayer('GAME');
+  else if (b.code === 'game_off') setLayer('BASE');
+});
+
+/* ---------- common actions ---------- */
+function hookRow(row, ways){
+  const t = targetOf(ways);
+  row.addEventListener('mouseenter', () => showPeek(t));
+  row.addEventListener('mouseleave', clearPeek);
+  row.addEventListener('focusin', () => showPeek(t));
+  row.addEventListener('focusout', clearPeek);
+}
+function actionRow(label, ways, note){
+  const row = el('div','row');
+  row.tabIndex = 0;
+  row.append(el('span','lbl', label), waysEl(ways));
+  if (note) row.append(el('div','note', note));
+  hookRow(row, ways);
+  return row;
+}
+const actions = $('#actions');
+for (const g of D.actions) {
+  const box = el('div','group');
+  box.append(el('h3', null, g.title));
+  for (const it of g.items) box.append(actionRow(it.label, it.ways, it.note));
+  actions.append(box);
+}
+
+/* ---------- symbols ---------- */
+const symbols = $('#symbols');
+const symByChar = {};
+for (const s of D.symbols) {
+  symByChar[s.ch] = s;
+  const tile = el('div','sym');
+  tile.tabIndex = 0;
+  tile.append(el('span','c', s.ch), waysEl(s.ways));
+  hookRow(tile, s.ways);
+  symbols.append(tile);
+}
+
+/* ---------- all layers ---------- */
+const minis = $('#minis');
+for (const l of D.layers) {
+  const box = el('div','mini');
+  box.style.setProperty('--lc', color(l.name));
+  const h = el('h3', null, l.name); h.append(el('span', null, l.reach));
+  const b = el('div','board');
+  box.append(h, b);
+  minis.append(box);
+  renderBoard(b, l.name, { mini:true });
+}
+
+/* ---------- search ---------- */
+const q = $('#q'), results = $('#results');
+const index = [];
+for (const g of D.actions) for (const it of g.items)
+  index.push({ label: it.label, hay: `${it.label} ${it.note || ''} ${g.title}`.toLowerCase(), ways: it.ways, note: it.note });
+for (const s of D.symbols) index.push({ label: s.ch, ch: s.ch, hay: '', ways: s.ways });
+const seen = new Set();
+for (const [code, ws] of Object.entries(D.ways)) {
+  const w = ws[0], k = L[w.layer].keys[w.pos];
+  const desc = (k.code === code ? k.desc : (code === k.tap ? k.desc.split(' · ')[0].replace('Tap: ','') : 'Alt')) || code;
+  if (seen.has(desc)) continue; seen.add(desc);
+  index.push({ label: desc, hay: `${desc} ${k.t} ${code}`.toLowerCase(), ways: ws.slice(0,2).map(x => x.chips) });
+}
+function search(){
+  const v = q.value.trim();
+  results.textContent = '';
+  if (!v) return;
+  const lv = v.toLowerCase();
+  let hits = index.filter(x => x.ch === v);
+  hits = hits.concat(index.filter(x => !x.ch && x.hay.includes(lv)));
+  if (!hits.length) { results.append(el('p','hint', `Nothing matches “${v}”. Try a symbol, a key name, or words like volume or workspace.`)); return; }
+  results.append(el('h2', null, 'Matches'));
+  const box = el('div','group');
+  for (const h of hits.slice(0, 14)) box.append(actionRow(h.ch ? `Type ${h.ch}` : h.label, h.ways, h.note));
+  results.append(box);
+}
+q.addEventListener('input', search);
+q.addEventListener('keydown', e => { if (e.key === 'Escape') { q.value = ''; search(); q.blur(); } });
+
+/* ---------- live typing ---------- */
+const NAMED = { Enter:'ENTER', Backspace:'BACKSPACE', Tab:'TAB', Escape:'ESC', Delete:'DEL', Home:'HOME', End:'END',
+  PageUp:'PG_UP', PageDown:'PG_DN', ArrowLeft:'LEFT', ArrowRight:'RIGHT', ArrowUp:'UP', ArrowDown:'DOWN',
+  ' ':'SPACE', Shift:'LSHIFT', Control:'LCTRL', Alt:'LALT', Meta:'LGUI', OS:'LGUI', Super:'LGUI',
+  AudioVolumeUp:'C_VOL_UP', AudioVolumeDown:'C_VOL_DN', AudioVolumeMute:'C_MUTE', MediaPlayPause:'C_PP',
+  Pause:'PAUSE_BREAK', NumLock:'KP_NUM' };
+for (let i = 1; i <= 12; i++) NAMED['F'+i] = 'F'+i;
+const SHOW = { ' ':'Space', Escape:'Esc', ArrowLeft:'←', ArrowRight:'→', ArrowUp:'↑', ArrowDown:'↓', Control:'Ctrl', Meta:'Super' };
+document.addEventListener('keydown', e => {
+  lastInput = Date.now();
+  if (e.target.closest && e.target.closest('input')) return;
+  if (e.ctrlKey && e.key !== 'Control') return;     // leave browser shortcuts alone
+  let ways = null, label = SHOW[e.key] || e.key, note = null;
+  if (e.key.length === 1 && symByChar[e.key]) ways = symByChar[e.key].ways;
+  else if (e.key.length === 1 && /[a-z]/i.test(e.key)) {
+    const pos = L.BASE.keys.findIndex(k => k.code === e.key.toUpperCase());
+    if (pos >= 0) ways = [(/[A-Z]/.test(e.key) ? D.ways.LSHIFT[0].chips : []).concat([{ t: e.key.toUpperCase(), layer:'BASE', pos }])];
+  } else if (NAMED[e.key] && D.ways[NAMED[e.key]]) ways = D.ways[NAMED[e.key]].slice(0,2).map(w => w.chips);
+  if (!ways) return;
+  if ([' ','ArrowUp','ArrowDown','PageUp','PageDown','Home','End','Backspace','/',"'"].includes(e.key)) e.preventDefault();
+  if (e.key === 'Escape') note = 'Hold Esc instead of tapping it to open SYM.';
+  typedDetail(label, ways, note);
+  showPeek(targetOf(ways), { pulse:true, hold:2600 });
+});
+document.addEventListener('pointermove', () => { lastInput = Date.now(); }, { passive:true });
+
+/* ---------- footer + staying fresh ---------- */
+$('#foot').innerHTML = '';
+$('#foot').append(`Generated ${D.generated} from config/toucan.keymap at ${D.rev}. Edit the keymap, then run `,
+  el('code', null, 'scripts/deploy-site.sh'), '.');
+const VERSION = `${D.rev} ${D.generated}`;
+function quiet(){ return Date.now() - lastInput > 60000 && !document.activeElement.closest('input'); }
+if (location.protocol.startsWith('http')) {
+  setInterval(async () => {
+    try {
+      const r = await fetch('version.txt', { cache:'no-store' });
+      if (r.ok && (await r.text()).trim() !== VERSION && quiet()) location.reload();
+    } catch {}
+  }, 60000);
+} else {
+  setInterval(() => { if (quiet()) location.reload(); }, 120000);   // local file: just re-read it now and then
+}
+
+idleDetail();
+draw();
+</script>
+</body>
+</html>

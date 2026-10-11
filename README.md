@@ -7,9 +7,18 @@ Only `config/toucan.keymap` differs from upstream so far.
 
 ## Reference sheet
 
-`reference.html` shows every layer on the real key geometry. After editing the
-keymap, run `scripts/reference.py` (needs `pipx install keymap-drawer`); an open
-copy reloads itself every minute.
+Live at **https://keymap.home.bironfamily.net** (LAN). `reference.html` is an
+interactive page generated from the keymap: layer tabs on the real key geometry,
+type a key to see where it lives, search, common actions, every symbol, and all
+layers at a glance. Every "how do I reach it" answer is computed from
+`config/toucan.keymap`, and the generator fails if a hand-written action points at
+a binding that has moved.
+
+After editing the keymap, run `scripts/deploy-site.sh`. It regenerates the page
+(`scripts/reference.py` + `scripts/reference.template.html`), smoke-tests it in
+headless Chromium (`scripts/check-site.mjs`, no npm needed) and publishes it.
+Open copies reload themselves once the new version is up. `scripts/reference.py`
+alone just rebuilds the local `reference.html`.
 
 ## Display
 
