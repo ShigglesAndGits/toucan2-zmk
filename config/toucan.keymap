@@ -11,12 +11,15 @@
  * V/A/C and Shift - a pinky mod-tap can't chord with A/Z/Shift.
  * GUI and RAISE stay on opposite hands for Super+RAISE+arrows (~1960 chords).
  * Alt, Del, Alt+Tab and sticky Ctrl+Alt were pressed 0 times, so they live
- * off the thumbs: Alt = hold Esc, Alt+Tab = RAISE+Tab, Del = RAISE+Backspace,
+ * off the thumbs: Alt = hold Tab, Alt+Tab = RAISE+Tab, Del = RAISE+Backspace,
  * sticky Ctrl+Alt + Ctrl+Alt chords on WORK.
  *
- * LOWER = the Sofle's right-hand numpad + brackets (7-8-9 on Y-U-I, 0 on the
- * left centre thumb) with operators + BLE profiles on the left. SYSTEM (used twice) = RAISE + the left
- * centre (Space) thumb.
+ * SYM (hold Esc) = symbols + numbers in one layer: the shifted number row under
+ * the left hand (!@#$% / ^&*()), the Sofle numpad under the right (7-8-9 on
+ * Y-U-I) with 0 and . on the right thumbs.
+ *
+ * LOWER = brackets + operators + BLE profiles + the GAME key. SYSTEM (used
+ * twice) = RAISE + the left centre (Space) thumb.
  *
  * GAME (LOWER + Esc corner) = BASE with Alt/Space/Ctrl thumbs, plain Esc, and
  * numbers + F-keys under the left hand while the Esc corner is held (NUM).
@@ -42,6 +45,7 @@
 #define WORK 5
 #define SYSTEM 6
 #define NUM 7
+#define SYM 8
 
 / {
     behaviors {
@@ -54,20 +58,9 @@
             bindings = <&mo RAISE>, <&mo WORK>;
         };
 
-        // Ctrl thumb: hold = Ctrl; tap-then-hold = LOWER from the left hand, which
-        // frees the right thumbs for 0 (centre) and . (outer) on the numpad.
-        // Another key press resolves it instantly, so Ctrl+key chords are not
-        // delayed; Ctrl alone (e.g. Ctrl+click) waits out the 200ms term.
-        td_ctrl_lower: tap_dance_ctrl_lower {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&kp LCTRL>, <&mo LOWER>;
-        };
-
-        // Esc: tap = Esc, hold = Alt. Tap-preferred so fast Esc-then-key rolls
-        // (vim) never turn into Alt chords; Alt needs a deliberate 200ms hold.
-        ht_alt_esc: hold_alt_tap_esc {
+        // Tab: tap = Tab, hold = Alt. Tap-preferred so fast Tab-then-key rolls
+        // never turn into Alt chords; Alt needs a deliberate 200ms hold.
+        ht_alt: hold_alt_tap {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
@@ -75,9 +68,10 @@
             bindings = <&kp>, <&kp>;
         };
 
-        // GAME's Esc corner: tap = Esc, hold = NUM. Balanced, so holding the
-        // corner and tapping Q gives 1 even inside the tapping term.
-        ht_num_esc: hold_num_tap_esc {
+        // Esc corner: tap = Esc, hold = a layer (SYM on BASE, NUM in GAME).
+        // Balanced, so holding the corner and tapping Q gives ! (or 1) even
+        // inside the tapping term.
+        ht_layer: hold_layer_tap {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
@@ -108,20 +102,19 @@
             display-name = "BASE";
 
             // -------------------------------------------------------------------------------
-            // | Esc/A |  Q  |  W  |  E   |  R   |  T   |   |  Y   |  U   |  I  |  O  |  P | BKSPC |
-            // |  TAB  |  A  |  S  |  D   |  F   |  G   |   |  H   |  J   |  K  |  L  |  ; |   '   |
+            // |Esc/SYM|  Q  |  W  |  E   |  R   |  T   |   |  Y   |  U   |  I  |  O  |  P | BKSPC |
+            // | TAB/A |  A  |  S  |  D   |  F   |  G   |   |  H   |  J   |  K  |  L  |  ; |   '   |
             // | SHIFT |  Z  |  X  |  C   |  V   |  B   |   |  N   |  M   |  ,  |  .  |  / |   -   |
             //                     | GUI  | SPACE| CTRL |   | RSE/WORK | ENTER | LOWER |
-            // (CTRL: tap, then hold = LOWER from the left thumb.)
-            // (Esc/A = tap Esc, hold Alt. Backspace and ' stay in their usual spots - moving
+            // (Esc/SYM = tap Esc, hold SYM. TAB/A = tap Tab, hold Alt. Backspace and ' stay in their usual spots - moving
             //  Backspace to the pinky home key was tried and reverted. Right Shift was pressed
             //  once, so it's - / _.)
 
             bindings = <
-&ht_alt_esc LALT ESC  &kp Q  &kp W  &kp E     &kp R      &kp T          &kp Y           &kp U      &kp I      &kp O    &kp P     &kp BACKSPACE
-&kp TAB               &kp A  &kp S  &kp D     &kp F      &kp G          &kp H           &kp J      &kp K      &kp L    &kp SEMI  &kp SQT
+&ht_layer SYM ESC     &kp Q  &kp W  &kp E     &kp R      &kp T          &kp Y           &kp U      &kp I      &kp O    &kp P     &kp BACKSPACE
+&ht_alt LALT TAB      &kp A  &kp S  &kp D     &kp F      &kp G          &kp H           &kp J      &kp K      &kp L    &kp SEMI  &kp SQT
 &kp LSHIFT            &kp Z  &kp X  &kp C     &kp V      &kp B          &kp N           &kp M      &kp COMMA  &kp DOT  &kp FSLH  &kp MINUS
-                                    &kp LGUI  &kp SPACE  &td_ctrl_lower &td_layer_work  &kp ENTER  &mo LOWER
+                                    &kp LGUI  &kp SPACE  &kp LCTRL      &td_layer_work  &kp ENTER  &mo LOWER
             >;
         };
 
@@ -135,11 +128,12 @@
             // |  SHIFT  |  Z  |  X  |  C  |  V  |  B  |   |                                      |
             //                   | ALT | SPACE| CTRL |   |
             // Plain Esc (no hold-Alt delay, Alt is the thumb); Super is off the thumbs
-            // so it can't be hit mid-game. Hold the Esc corner for NUM.
+            // so it can't be hit mid-game. Hold the Esc corner for NUM. Tab is a plain
+            // Tab here (BASE's hold-for-Alt would break held scoreboards).
 
             bindings = <
-&ht_num_esc NUM ESC  &trans  &trans  &trans    &trans     &trans       &trans  &trans  &trans  &trans  &trans  &trans
-&trans               &trans  &trans  &trans    &trans     &trans       &trans  &trans  &trans  &trans  &trans  &trans
+&ht_layer NUM ESC    &trans  &trans  &trans    &trans     &trans       &trans  &trans  &trans  &trans  &trans  &trans
+&kp TAB              &trans  &trans  &trans    &trans     &trans       &trans  &trans  &trans  &trans  &trans  &trans
 &trans               &trans  &trans  &trans    &trans     &trans       &trans  &trans  &trans  &trans  &trans  &trans
                                      &kp LALT  &kp SPACE  &kp LCTRL    &trans  &trans  &trans
             >;
@@ -149,23 +143,19 @@
             display-name = "LOWER";
 
             // -------------------------------------------------------------------------------
-            // | GAME  |  \  |  <  |  >   |  -   |  +   |   |  7   |  8   |  9  |  (  |  )  | BKSPC |
-            // |       |     |  ,  |  .   |  *   |  /   |   |  4   |  5   |  6  |  [  |  ]  |   |   |
-            // |       | BT0 | BT1 | BT2  | BT3  | BT4  |   |  1   |  2   |  3  |  {  |  }  |   =   |
-            //                     |      |  0   |  ▼*  |   |      |  0   | . ▼ |
-            // Right half is the Sofle's LOWER verbatim (7-8-9 on Y-U-I, brackets on the
-            // outer columns). The Sofle's 0 / . * thumbs don't fit under a held right
-            // thumb, so 0 is the left centre thumb and the operators sit on the left.
+            // | GAME  |  \  |  <  |  >   |  -   |  +   |   |      |      |     |  (  |  )  | BKSPC |
+            // |       |     |  ,  |  .   |  *   |  /   |   |      |      |     |  [  |  ]  |   |   |
+            // |       | BT0 | BT1 | BT2  | BT3  | BT4  |   |      |      |     |  {  |  }  |   =   |
+            //                     |      |      |      |   |      |      |  ▼  |
+            // Brackets stay on the Sofle's outer columns; numbers moved to SYM (hold Esc).
             // BLE profile select stays on the bottom-left row (Sofle spot).
             // GAME (Esc corner) = enter gaming mode + jump to the Play workspace.
-            // Two ways in: hold the right outer thumb (0 on the left centre thumb), or
-            // tap-then-hold Ctrl (▼*) and use the right thumbs: centre = 0, outer = .
 
             bindings = <
-&game_on  &kp BSLH    &kp LT        &kp GT        &kp MINUS     &kp PLUS        &kp N7  &kp N8  &kp N9  &kp LPAR  &kp RPAR  &kp BACKSPACE
-&trans  &trans        &kp COMMA     &kp DOT       &kp STAR      &kp FSLH        &kp N4  &kp N5  &kp N6  &kp LBKT  &kp RBKT  &kp PIPE
-&trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4    &kp N1  &kp N2  &kp N3  &kp LBRC  &kp RBRC  &kp EQUAL
-                                    &trans        &kp N0        &trans          &trans  &kp N0  &kp DOT
+&game_on  &kp BSLH    &kp LT        &kp GT        &kp MINUS     &kp PLUS        &trans  &trans  &trans  &kp LPAR  &kp RPAR  &kp BACKSPACE
+&trans  &trans        &kp COMMA     &kp DOT       &kp STAR      &kp FSLH        &trans  &trans  &trans  &kp LBKT  &kp RBKT  &kp PIPE
+&trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4    &trans  &trans  &trans  &kp LBRC  &kp RBRC  &kp EQUAL
+                                    &trans        &trans        &trans          &trans  &trans  &trans
             >;
         };
 
@@ -260,6 +250,24 @@
 &trans  &kp N6  &kp N7  &kp N8     &kp N9  &kp N0       &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &kp F1  &kp F2  &kp F3     &kp F4  &kp F5       &trans  &trans  &trans  &trans  &trans  &trans
                         &game_off  &trans  &trans       &trans  &trans  &trans
+            >;
+        };
+
+        sym {
+            display-name = "SYM";
+
+            // Hold the Esc corner (pinky). Left = the shifted number row, right = numpad.
+            // -------------------------------------------------------------------------------
+            // |  ▼    |  !  |  @  |  #   |  $   |  %   |   |  7   |  8   |  9  |  /  |  *  | BKSPC |
+            // |       |  ^  |  &  |  *   |  (   |  )   |   |  4   |  5   |  6  |  -  |  +  |       |
+            // |       |  `  |  ~  |  _   |  =   |  |   |   |  1   |  2   |  3  |  ,  |  =  |       |
+            //                     |      |      |      |   |      |  0   |  .  |
+
+            bindings = <
+&trans  &kp EXCL   &kp AT     &kp HASH   &kp DLLR   &kp PRCNT     &kp N7  &kp N8  &kp N9  &kp FSLH   &kp STAR  &kp BACKSPACE
+&trans  &kp CARET  &kp AMPS   &kp STAR   &kp LPAR   &kp RPAR      &kp N4  &kp N5  &kp N6  &kp MINUS  &kp PLUS  &trans
+&trans  &kp GRAVE  &kp TILDE  &kp UNDER  &kp EQUAL  &kp PIPE      &kp N1  &kp N2  &kp N3  &kp COMMA  &kp EQUAL &trans
+                              &trans     &trans     &trans        &trans  &kp N0  &kp DOT
             >;
         };
 

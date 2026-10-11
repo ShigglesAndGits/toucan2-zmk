@@ -21,18 +21,20 @@ OUT = ROOT / "reference.html"
 # How each layer is reached, shown under its title.
 REACH = {
     "BASE": "default",
-    "LOWER": "hold right outer thumb &middot; or tap-then-hold Ctrl (right thumbs = 0 and .)",
+    "LOWER": "hold right outer thumb",
     "RAISE": "hold right inner thumb",
     "WORK": "double-tap + hold right inner thumb",
     "MOU": "automatic while a finger is on the trackpad",
     "SYSTEM": "hold RAISE + left centre (Space) thumb",
     "GAME": "LOWER + Esc corner (also jumps to Play) &middot; leave: hold corner + left outer thumb",
     "NUM": "in GAME: hold the Esc corner",
+    "SYM": "hold the Esc corner (symbols left, numpad right)",
 }
 
 NOTES = [
     ("Thumbs", "left: GUI &middot; Space &middot; Ctrl &nbsp;|&nbsp; right: RAISE &middot; Enter &middot; LOWER"),
-    ("Esc / Alt", "tap for Esc, hold (200ms) for Alt"),
+    ("Esc / SYM", "tap for Esc, hold for symbols + numpad"),
+    ("Tab / Alt", "tap for Tab, hold (200ms) for Alt"),
     ("Alt+Tab", "RAISE + Tab"),
     ("Del", "RAISE + Backspace"),
     ("Super+arrows", "RAISE + M , . / (column focus)"),
@@ -116,9 +118,7 @@ def key_html(binding):
 
 def board(name, bindings, phys):
     width, height = 1400, 440
-    if name == "LOWER":  # outer thumb is '.' when LOWER comes from the Ctrl tap-dance
-        bindings = [{"t": ".", "s": "or held"} if i == 41 else b for i, b in enumerate(bindings)]
-    if name == "NUM":  # the Esc corner (0) is held
+    if name in ("NUM", "SYM"):  # the Esc corner (0) is held
         bindings = [{"type": "held"} if i == 0 else b for i, b in enumerate(bindings)]
     if name == "SYSTEM":  # RAISE (39) + left centre thumb (37) are held
         bindings = [{"type": "held"} if i in (37, 39) else b for i, b in enumerate(bindings)]
