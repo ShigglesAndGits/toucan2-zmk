@@ -25,20 +25,21 @@ REACH = {
     "RAISE": "hold right inner thumb",
     "WORK": "double-tap + hold right inner thumb",
     "MOU": "automatic while a finger is on the trackpad",
-    "SYSTEM": "hold RAISE + left centre (Space) thumb",
+    "SYSTEM": "hold RAISE + left inner (Space) thumb",
     "GAME": "LOWER + Esc corner (also jumps to Play) &middot; leave: hold corner + left outer thumb",
     "NUM": "in GAME: hold the Esc corner",
     "SYM": "hold the Esc corner (symbols left, numpad right)",
 }
 
 NOTES = [
-    ("Thumbs", "left: GUI &middot; Space &middot; Ctrl &nbsp;|&nbsp; right: RAISE &middot; Enter &middot; LOWER"),
+    ("Thumbs", "left: GUI &middot; Ctrl &middot; Space &nbsp;|&nbsp; right: RAISE &middot; Enter &middot; LOWER"),
     ("Esc / SYM", "tap for Esc, hold for symbols + numpad"),
     ("Tab / Alt", "tap for Tab, hold (200ms) for Alt"),
     ("Alt+Tab", "RAISE + Tab"),
     ("Del", "RAISE + Backspace"),
     ("Super+arrows", "RAISE + M , . / (column focus)"),
     ("Ctrl+Alt+Del", "WORK &rarr; C-A-Del &middot; sticky Ctrl+Alt also on WORK"),
+    ("Workspaces", "LOWER + Q W E R T = Super+1&ndash;5 (add Shift to move the window)"),
     ("Profiles", "BT 0&ndash;4 on LOWER bottom-left &middot; BT Clr on SYSTEM"),
     ("Output", "Out BLE / USB / Tog on SYSTEM (persists in flash)"),
     ("Gestures", "3-finger swipe = Super+arrow (column focus) &middot; pinch = Ctrl+−/= zoom"),
@@ -59,6 +60,7 @@ PRETTY = {
     "Ctl+Alt+PAUSE BREAK": "C-A-Brk", "&mkp LCLK": "LMB", "&mkp RCLK": "RMB",
     "&mkp MCLK": "MMB", "Gui+LEFT": "◆←", "Gui+RIGHT": "◆→", "Gui+UP": "◆↑",
     "Gui+DOWN": "◆↓", "Alt+TAB": "Alt⇥",
+    **{f"Gui+{n}": f"◆{n}" for n in "12345"}, **{f"Gui+N{n}": f"◆{n}" for n in "12345"},
     "&game_on": "GAME ▶", "&game_off": "◀ Desk",
 }
 LAYER_NAMES = set(REACH) | {"WORK"}
@@ -120,8 +122,8 @@ def board(name, bindings, phys):
     width, height = 1400, 440
     if name in ("NUM", "SYM"):  # the Esc corner (0) is held
         bindings = [{"type": "held"} if i == 0 else b for i, b in enumerate(bindings)]
-    if name == "SYSTEM":  # RAISE (39) + left centre thumb (37) are held
-        bindings = [{"type": "held"} if i in (37, 39) else b for i, b in enumerate(bindings)]
+    if name == "SYSTEM":  # RAISE (39) + left inner thumb (38) are held
+        bindings = [{"type": "held"} if i in (38, 39) else b for i, b in enumerate(bindings)]
     keys = []
     for (x, y, rot, rx, ry), binding in zip(phys, bindings):
         cls, inner = key_html(binding)

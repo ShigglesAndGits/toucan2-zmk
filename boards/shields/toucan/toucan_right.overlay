@@ -57,13 +57,21 @@
 
         enable-power-management;
         // idle-sleep; // provides maximal power savings but when ZMK is idle (i.e. you haven't used keyboard in 30secs) the touchpad will not work.  not recommended.
-        // timeout-lp1 = <3>; // 60s timeout before entering lp2 state (20 secs per unit) (default was 20s)
-        report-rate-lp2 = <640>; // 640ms report rate in LP2 state means 55uA draw rather than default 160ms 174uA draw
+        // Less aggressive power saving than stock (Alex, 2026-10-11): stock dropped to a
+        // 640ms LP2 report rate, so the first touch after a pause lagged up to ~0.6s.
+        // Faster idle/low-power rates and longer timeouts trade some battery for that.
+        report-rate-idle = <20>;  // ms between scans with no finger
+        report-rate-lp1 = <40>;   // ms
+        report-rate-lp2 = <80>;   // ms (stock Toucan 640)
+        timeout-idle = <120>;     // s of no touch before LP1
+        timeout-lp1 = <15>;       // 20s units: 5 min in LP1 before LP2
         scroll-angle = <30>; // The default angle (about 47 deg) is too big on toucan2 I think
         sensitivity = <100>;
         scroll-sensitivity = <100>;
 
-        filter-settings=<0x0B>;
+        // 0x09 = IIR (dynamic) + ALP, moving-average OFF: the MAV made the cursor
+        // trail the finger ("floaty" next to the Sofle's Cirque). Tested 2026-10-10.
+        filter-settings=<0x09>;
         hold-time = <500>;
 
         zoom;
