@@ -4,10 +4,10 @@
  *
  * The Toucan is 3x6 + 3 thumbs per side with no number row and no encoder.
  * Thumb assignments follow the Sofle keystroke captures (Aug 2026, 61.6k presses):
- *   left  outer->inner: GUI (810), CTRL (639), SPACE (8397)  (the Sofle's order;
- *   Space-centred was tried and reverted)
- *   right inner->outer: ENTER (583), RAISE/WORK (998), LOWER (144)  (Enter
- *   inner to mirror Space, per Alex)
+ *   left  outer->inner: CTRL (639), SPACE (8397), GUI (810)
+ *   right inner->outer: RAISE/WORK (998), ENTER (583), LOWER (144)
+ * Space and Enter are the centre thumbs (mirrored), and Ctrl stays just outside
+ * Space as on the Sofle, per Alex.
  * CTRL is a plain thumb key because its top partners are Backspace (464),
  * V/A/C and Shift - a pinky mod-tap can't chord with A/Z/Shift.
  * GUI and RAISE stay on opposite hands for Super+RAISE+arrows (~1960 chords).
@@ -20,7 +20,7 @@
  * Y-U-I) with 0 and . on the right thumbs.
  *
  * LOWER = Super+1-5 (workspaces) on the top row + brackets + operators + BLE
- * profiles + the GAME key. SYSTEM (used twice) = RAISE + the left inner
+ * profiles + the GAME key. SYSTEM (used twice) = RAISE + the left centre
  * (Space) thumb.
  *
  * GAME (LOWER + Esc corner) = BASE with Alt/Space/Ctrl thumbs, plain Esc, and
@@ -107,7 +107,7 @@
             // |Esc/SYM|  Q  |  W  |  E   |  R   |  T   |   |  Y   |  U   |  I  |  O  |  P | BKSPC |
             // | TAB/A |  A  |  S  |  D   |  F   |  G   |   |  H   |  J   |  K  |  L  |  ; |   '   |
             // | SHIFT |  Z  |  X  |  C   |  V   |  B   |   |  N   |  M   |  ,  |  .  |  / |   -   |
-            //                     | GUI  | CTRL | SPACE|   | ENTER | RSE/WORK | LOWER |
+            //                     | CTRL | SPACE| GUI  |   | RSE/WORK | ENTER | LOWER |
             // (Esc/SYM = tap Esc, hold SYM. TAB/A = tap Tab, hold Alt. Backspace and ' stay in their usual spots - moving
             //  Backspace to the pinky home key was tried and reverted. Right Shift was pressed
             //  once, so it's - / _.)
@@ -116,7 +116,7 @@
 &ht_layer SYM ESC     &kp Q  &kp W  &kp E     &kp R      &kp T          &kp Y           &kp U      &kp I      &kp O    &kp P     &kp BACKSPACE
 &ht_alt LALT TAB      &kp A  &kp S  &kp D     &kp F      &kp G          &kp H           &kp J      &kp K      &kp L    &kp SEMI  &kp SQT
 &kp LSHIFT            &kp Z  &kp X  &kp C     &kp V      &kp B          &kp N           &kp M      &kp COMMA  &kp DOT  &kp FSLH  &kp MINUS
-                                    &kp LGUI  &kp LCTRL  &kp SPACE      &kp ENTER  &td_layer_work  &mo LOWER
+                                    &kp LCTRL &kp SPACE  &kp LGUI       &td_layer_work  &kp ENTER  &mo LOWER
             >;
         };
 
@@ -128,7 +128,7 @@
             // | Esc/NUM |  Q  |  W  |  E  |  R  |  T  |   |                (BASE)                |
             // |   TAB   |  A  |  S  |  D  |  F  |  G  |   |                                      |
             // |  SHIFT  |  Z  |  X  |  C  |  V  |  B  |   |                                      |
-            //                   | ALT | CTRL | SPACE|   |
+            //                   | CTRL | SPACE| ALT |   |
             // Plain Esc (no hold-Alt delay, Alt is the thumb); Super is off the thumbs
             // so it can't be hit mid-game. Hold the Esc corner for NUM. Tab is a plain
             // Tab here (BASE's hold-for-Alt would break held scoreboards).
@@ -137,7 +137,7 @@
 &ht_layer NUM ESC    &trans  &trans  &trans    &trans     &trans       &trans  &trans  &trans  &trans  &trans  &trans
 &kp TAB              &trans  &trans  &trans    &trans     &trans       &trans  &trans  &trans  &trans  &trans  &trans
 &trans               &trans  &trans  &trans    &trans     &trans       &trans  &trans  &trans  &trans  &trans  &trans
-                                     &kp LALT  &kp LCTRL  &kp SPACE    &trans  &trans  &trans
+                                     &kp LCTRL &kp SPACE  &kp LALT     &trans  &trans  &trans
             >;
         };
 
@@ -170,19 +170,19 @@
             // |       |  !  |  @  |  #   |  $   |  %   |   |  \   | HOME | PGDN | PGUP | END |  DEL  |
             // | A+TAB |  ^  |  &  |  *   |  -   |  _   |   |      |  <-  |  v   |  ^   |  -> |       |
             // |       |  `  |  ~  |  +   |      |      |   |      | S+<- | S+v  | S+^  | S+->|       |
-            //                     |      |      |SYSTEM|   |      |  ▼   |      |
+            //                     |      |SYSTEM|      |   |  ▼   |      |      |
             // Left half = the Sofle number row's symbols. RAISE+Tab = Alt+Tab.
             // S+arrows = Super+arrow (Hyprland column focus, the top chord at 1340
             // presses) as a 2-key chord under the arrows. RAISE+Backspace = Del.
-            // Holding the left inner (Space) thumb here reaches SYSTEM; Ctrl (centre)
-            // stays Ctrl so RAISE+Ctrl+arrows still jump words.
+            // Holding the left centre (Space) thumb here reaches SYSTEM; Ctrl and Super
+            // stay themselves so RAISE+Ctrl+arrows (word jumps) and Super+RAISE+arrows work.
             // Trackpad scrolls on this layer (see trackpad_listener override below).
 
             bindings = <
 &trans        &kp EXCL   &kp AT     &kp HASH  &kp DLLR   &kp PRCNT     &kp BSLH  &kp HOME  &kp PG_DN  &kp PG_UP  &kp END    &kp DEL
 &kp LA(TAB)   &kp CARET  &kp AMPS   &kp STAR  &kp MINUS  &kp UNDER     &trans    &kp LEFT  &kp DOWN   &kp UP     &kp RIGHT  &trans
 &trans        &kp GRAVE  &kp TILDE  &kp PLUS  &trans     &trans        &trans    &kp LG(LEFT)  &kp LG(DOWN)  &kp LG(UP)  &kp LG(RIGHT)  &trans
-                                    &trans    &trans     &mo SYSTEM    &trans    &trans    &trans
+                                    &trans    &mo SYSTEM &trans        &trans    &trans    &trans
             >;
         };
 
@@ -226,7 +226,7 @@
             // |  F1   |  F2  |  F3  |  F4  |  F5  |  F6  |   |  F7    |  F8  |  F9  | F10  | F11 |  F12 |
             // |       | BT0  | BT1  | BT2  | BT3  | BT4  |   | BT_CLR | oBLE | oUSB | oTOG |     |      |
             // | BOOT  | MUTE | VOL- | VOL+ | PLAY |      |   |        | DEL  | END  | PAUSE| ESC | BOOT |
-            //                       |      |      |  ▼   |   |        |  ▼   |      |
+            //                       |      |  ▼   |      |   |   ▼    |      |      |
             // (oBLE/oUSB/oTOG = output endpoint selection; the preference persists in flash.
             //  MUTE/VOL/PLAY replace the Sofle encoders and the old ALT double-tap.
             //  BOOT = UF2 bootloader on the half it's pressed on, so flashing needs no
@@ -267,7 +267,7 @@
             // |  ▼    |  !  |  @  |  #   |  $   |  %   |   |  7   |  8   |  9  |  /  |  *  | BKSPC |
             // |       |  ^  |  &  |  *   |  (   |  )   |   |  4   |  5   |  6  |  -  |  +  |       |
             // |       |  `  |  ~  |  _   |  =   |  |   |   |  1   |  2   |  3  |  ,  |  =  |       |
-            //                     |      |      |      |   | ENTER|  0   |  .  |
+            //                     |      |      |      |   |      |  0   |  .  |
 
             bindings = <
 &trans  &kp EXCL   &kp AT     &kp HASH   &kp DLLR   &kp PRCNT     &kp N7  &kp N8  &kp N9  &kp FSLH   &kp STAR  &kp BACKSPACE
