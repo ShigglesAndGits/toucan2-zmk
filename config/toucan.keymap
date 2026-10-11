@@ -224,15 +224,17 @@
             // -------------------------------------------------------------------------------
             // |  F1   |  F2  |  F3  |  F4  |  F5  |  F6  |   |  F7    |  F8  |  F9  | F10  | F11 |  F12 |
             // |       | BT0  | BT1  | BT2  | BT3  | BT4  |   | BT_CLR | oBLE | oUSB | oTOG |     |      |
-            // |       | MUTE | VOL- | VOL+ | PLAY |      |   |        | DEL  | END  | PAUSE| ESC |      |
+            // | BOOT  | MUTE | VOL- | VOL+ | PLAY |      |   |        | DEL  | END  | PAUSE| ESC | BOOT |
             //                       |      |      |  ▼   |   |   ▼    |      |      |
             // (oBLE/oUSB/oTOG = output endpoint selection; the preference persists in flash.
-            //  MUTE/VOL/PLAY replace the Sofle encoders and the old ALT double-tap.)
+            //  MUTE/VOL/PLAY replace the Sofle encoders and the old ALT double-tap.
+            //  BOOT = UF2 bootloader on the half it's pressed on, so flashing needs no
+            //  reset button: left BOOT for the left half, right BOOT for the right.)
 
             bindings = <
 &kp F1  &kp F2        &kp F3        &kp F4        &kp F5        &kp F6          &kp F7      &kp F8        &kp F9        &kp F10          &kp F11  &kp F12
 &trans  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4    &bt BT_CLR  &out OUT_BLE  &out OUT_USB  &out OUT_TOG     &trans   &trans
-&trans  &kp C_MUTE    &kp C_VOL_DN  &kp C_VOL_UP  &kp C_PP      &trans          &trans      &kp DEL       &kp END       &kp PAUSE_BREAK  &kp ESC  &trans
+&bootloader  &kp C_MUTE  &kp C_VOL_DN  &kp C_VOL_UP  &kp C_PP  &trans     &trans      &kp DEL       &kp END       &kp PAUSE_BREAK  &kp ESC  &bootloader
                                     &trans        &trans        &trans          &trans      &trans        &trans
             >;
         };

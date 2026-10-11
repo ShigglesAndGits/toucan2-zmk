@@ -24,13 +24,16 @@ changes without flashing via `scripts/display-preview/preview.sh`.
    XIAO drive and copies the file for you (run once per half).
 1. Push; GitHub Actions builds the firmware. Download the `firmware` artifact
    from the run and unzip it.
-2. Plug the **left** half in with a data USB-C cable and double-tap the RST
-   button on the XIAO (beside the USB-C port; support the acrylic plate while
-   pressing). A drive named `XIAO...` mounts.
+2. Plug the **left** half in with a data USB-C cable and put it in bootloader
+   mode: hold RAISE + the left Space thumb (SYSTEM) and press the bottom-left
+   key (BOOT). Without working firmware, double-tap the RST button on the XIAO
+   instead (beside the USB-C port; support the acrylic plate while pressing).
+   A drive named `XIAO...` mounts.
 3. Copy `toucan_left rgbled_adapter nice_view_gem-seeeduino_xiao_ble-zmk.uf2`
    onto it. It reboots by itself after ~5-10 s, so ignore any "not ejected
    properly" warning.
-4. Repeat with the **right** half and the `toucan_right ...` file.
+4. Repeat with the **right** half and the `toucan_right ...` file; its BOOT
+   key is SYSTEM + the bottom-right key.
 5. The halves stay paired. Use `settings_reset` only if they stop finding
    each other: flash it to both halves, then the real firmware again.
 

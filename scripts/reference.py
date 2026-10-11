@@ -40,6 +40,7 @@ NOTES = [
     ("Super+arrows", "RAISE + M , . / (column focus)"),
     ("Ctrl+Alt+Del", "WORK &rarr; C-A-Del &middot; sticky Ctrl+Alt also on WORK"),
     ("Workspaces", "LOWER + Q W E R T = Super+1&ndash;5 (add Shift to move the window)"),
+    ("Flashing", "SYSTEM + bottom-left = left half to bootloader &middot; SYSTEM + bottom-right = right half"),
     ("Profiles", "BT 0&ndash;4 on LOWER bottom-left &middot; BT Clr on SYSTEM"),
     ("Output", "Out BLE / USB / Tog on SYSTEM (persists in flash)"),
     ("Gestures", "3-finger swipe = Super+arrow (column focus) &middot; pinch = Ctrl+−/= zoom"),
@@ -59,7 +60,7 @@ PRETTY = {
     "Ctl+Alt+DEL": "C-A-Del", "Ctl+Alt+END": "C-A-End",
     "Ctl+Alt+PAUSE BREAK": "C-A-Brk", "&mkp LCLK": "LMB", "&mkp RCLK": "RMB",
     "&mkp MCLK": "MMB", "Gui+LEFT": "◆←", "Gui+RIGHT": "◆→", "Gui+UP": "◆↑",
-    "Gui+DOWN": "◆↓", "Alt+TAB": "Alt⇥",
+    "Gui+DOWN": "◆↓", "Alt+TAB": "Alt⇥", "&bootloader": "Boot", "BOOTLOADER": "Boot",
     **{f"Gui+{n}": f"◆{n}" for n in "12345"}, **{f"Gui+N{n}": f"◆{n}" for n in "12345"},
     "&game_on": "GAME ▶", "&game_off": "◀ Desk",
 }
